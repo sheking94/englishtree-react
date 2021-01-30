@@ -10,10 +10,12 @@ import theme from './theme/theme';
 import 'fontsource-roboto';
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <App />
-  </ThemeProvider>,
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
