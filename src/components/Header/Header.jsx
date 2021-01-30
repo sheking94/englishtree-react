@@ -1,86 +1,79 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import {
   AppBar,
+  Drawer,
   IconButton,
   makeStyles,
-  Menu,
-  MenuItem,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
+import SideMenu from './SideMenu/SideMenu';
+
+import '../../theme/fonts.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  topBar: {
+    background: `linear-gradient(
+        45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main}
+      )`,
   },
+
   title: {
     flexGrow: 1,
+    fontFamily: '"Caveat Brush", cursive',
+    letterSpacing: theme.spacing(0.4),
+    textAlign: 'center',
     textTransform: 'uppercase',
   },
 }));
 
 const Header = () => {
-  const [menuElement, setMenuElement] = useState(null);
+  const [menuIsOpened, setMenuIsOpened] = useState(false);
 
   const classes = useStyles();
-  const history = useHistory();
 
-  const handleMenuClick = (event) => {
-    setMenuElement(event.currentTarget);
+  const handleMenuClick = () => {
+    setMenuIsOpened(true);
   };
 
   const handleMenuClose = () => {
-    setMenuElement(null);
-  };
-
-  const handleMenuItemClick = (url) => {
-    history.push(url);
-    handleMenuClose();
+    setMenuIsOpened(false);
   };
 
   return (
     <header className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.topBar} position="static">
         <Toolbar>
           <IconButton
             aria-label="menu"
-            className={classes.menuButton}
             color="inherit"
             edge="start"
             onClick={handleMenuClick}
           >
-            <MenuIcon />
+            <MenuIcon fontSize="large" />
           </IconButton>
-          <Menu
-            id="main-menu"
-            anchorEl={menuElement}
+
+          <Drawer
+            aria-label="menu-drawer"
             keepMounted
-            open={Boolean(menuElement)}
+            open={menuIsOpened}
             onClose={handleMenuClose}
           >
-            <nav>
-              <MenuItem onClick={() => handleMenuItemClick('/')}>Home</MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick('/student')}>
-                Student's Panel
-              </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick('/teacher')}>
-                Teacher's Panel
-              </MenuItem>
-            </nav>
-          </Menu>
+            <SideMenu />
+          </Drawer>
 
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h3" component="h1" className={classes.title}>
             Englishtree
           </Typography>
-          <IconButton>
-            <AccountCircle />
+
+          <IconButton aria-label="user" color="inherit" edge="end">
+            <AccountCircle fontSize="large" />
           </IconButton>
         </Toolbar>
       </AppBar>
