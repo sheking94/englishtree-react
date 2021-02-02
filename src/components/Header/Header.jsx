@@ -10,17 +10,18 @@ import {
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
-import SideMenu from './SideMenu/SideMenu';
+import SideMenu from './subcomponents/SideMenu/SideMenu';
 
 import '../../theme/fonts.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    display: 'flex',
   },
   topBar: {
     background: `linear-gradient(
-        45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main}
+        45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.main}
       )`,
   },
 
@@ -59,15 +60,6 @@ const Header = () => {
             <MenuIcon fontSize="large" />
           </IconButton>
 
-          <Drawer
-            aria-label="menu-drawer"
-            keepMounted
-            open={menuIsOpened}
-            onClose={handleMenuClose}
-          >
-            <SideMenu />
-          </Drawer>
-
           <Typography variant="h3" component="h1" className={classes.title}>
             Englishtree
           </Typography>
@@ -77,6 +69,14 @@ const Header = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
+      <Drawer
+        aria-label="menu-drawer"
+        keepMounted
+        open={menuIsOpened}
+        onClose={handleMenuClose}
+      >
+        <SideMenu />
+      </Drawer>
     </header>
   );
 };

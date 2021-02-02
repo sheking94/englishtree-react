@@ -13,8 +13,8 @@ const App = () => {
       <Header />
       <Switch>
         <Route path="/" component={LandingPage} exact />
-        <Route path="/student" component={StudentPanel} exact />
-        <Route path="/teacher" component={TeacherPanel} exact />
+        <Route path="/student" component={StudentPanel} />
+        <Route path="/teacher" component={TeacherPanel} />
         <Route component={ErrorPage} />
       </Switch>
     </Router>
