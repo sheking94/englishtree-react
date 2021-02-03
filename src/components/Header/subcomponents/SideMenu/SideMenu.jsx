@@ -17,35 +17,9 @@ import SchoolIcon from '@material-ui/icons/School';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-const menuItemsStudent = [
-  {
-    text: 'student 1',
-    to: '/student/1',
-  },
-  {
-    text: 'student 2',
-    to: '/student/2',
-  },
-  {
-    text: 'student 3',
-    to: '/student/3',
-  },
-];
+import ExpandedList from './subcomponents/ExpandedList/ExpandedList';
 
-const menuItemsTeacher = [
-  {
-    text: 'teacher 1',
-    to: '/teacher/1',
-  },
-  {
-    text: 'teacher 2',
-    to: '/teacher/2',
-  },
-  {
-    text: 'teacher 3',
-    to: '/teacher/3',
-  },
-];
+import { menuItemsStudent, menuItemsTeacher } from './menuItems';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   list: {
-    minWidth: 250,
+    minWidth: 300,
   },
   listItem: {
     display: 'flex',
@@ -84,23 +58,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const ExpandedList = ({ data, nestedClass }) => {
-  const items = data.map((item) => (
-    <ListItem
-      button
-      className={nestedClass}
-      component={NavLink}
-      exact
-      key={item.to}
-      to={item.to}
-    >
-      <ListItemText primary={item.text} />
-    </ListItem>
-  ));
-
-  return <List disablePadding>{items}</List>;
-};
 
 const SideMenu = () => {
   const [isStudentListExpanded, setIsStudentListExpanded] = useState(false);

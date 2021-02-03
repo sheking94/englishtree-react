@@ -17,14 +17,12 @@ import '../../theme/fonts.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    display: 'flex',
   },
   topBar: {
     background: `linear-gradient(
         45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.main}
       )`,
   },
-
   title: {
     flexGrow: 1,
     fontFamily: '"Caveat Brush", cursive',
@@ -48,7 +46,7 @@ const Header = () => {
   };
 
   return (
-    <header className={classes.root}>
+    <div className={classes.root}>
       <AppBar className={classes.topBar} position="static">
         <Toolbar>
           <IconButton
@@ -77,7 +75,7 @@ const Header = () => {
       >
         <SideMenu />
       </Drawer>
-    </header>
+    </div>
   );
 };
 
