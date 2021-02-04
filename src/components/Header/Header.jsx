@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   AppBar,
+  Container,
   Drawer,
   IconButton,
   makeStyles,
@@ -20,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     background: `linear-gradient(
-        45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.main}
+      45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.main}
       )`,
+    display: 'flex',
   },
   title: {
     flexGrow: 1,
