@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import {
   AppBar,
-  Container,
   Drawer,
   IconButton,
   makeStyles,

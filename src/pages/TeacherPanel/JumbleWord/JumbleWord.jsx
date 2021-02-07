@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet';
 
@@ -11,24 +11,176 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import { shuffleArray } from '../../../logic/arrayLogic';
+import { normalizeWord, wordIsCorrect } from '../../../logic/wordLogic';
+
+import CategorySelect from './subcomponents/CategorySelect/CategorySelect';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     margin: theme.spacing(4),
   },
-  title: {},
-  mainGrid: {
-    padding: theme.spacing(2),
+  titleDivider: {
+    marginBottom: theme.spacing(2),
   },
-  componentBackground: {
+  paper: {
     backgroundColor: '#f5f5f5',
     border: '1px solid #eee',
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
+    flexDirection: 'column',
+    '& > *': {
+      flexGrow: 1,
+      '&:not(:last-child)': {
+        marginBottom: theme.spacing(2),
+      },
+    },
   },
 }));
 
+const shuffleWord = (word) => {
+  // create an array from the word
+  const wordToArray = word.split('');
+  let shuffledWord = shuffleArray(wordToArray).join('');
+
+  // if shuffledWord is the same as word,
+  // shuffle again (cannot become an infinite loop
+  // because of wordIsCorrect function)
+  while (shuffledWord === word) shuffledWord = shuffleArray(wordToArray).join('');
+
+  return shuffledWord;
+};
+
 const JumbleWord = () => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [addedWord, setAddedWord] = useState('');
+  const [addedCategory, setAddedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [words, setWords] = useState([]);
+  const [excercise, setExcercise] = useState([]);
+
   const classes = useStyles();
+
+  const handleChangeCategory = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const resetData = () => {
+    // load data from API
+    const loadedCategories = ['sport', 'family', 'animals', 'food'];
+    const loadedWords = [
+      'football',
+      'tennis',
+      'cricket',
+      'swimming',
+      'mother',
+      'father',
+      'son',
+      'daughter',
+      'hamburger',
+      'pizza',
+      'sandwich',
+    ];
+
+    // load categories and words
+    setCategories(loadedCategories);
+    setWords(loadedWords);
+
+    // reset excercise
+    setExcercise([]);
+    // create an excercise array from categories
+    categories.forEach((category) => {
+      setExcercise((prev) => [...prev, { category, words: [] }]);
+    });
+  };
+
+  const handleAddCategory = () => {
+    const category = normalizeWord(addedCategory);
+
+    // -- Check if the input category string is correct
+    if (!wordIsCorrect(category)) {
+      // this.danger('Enter a correct category!');
+      return;
+    }
+
+    // -- Check if the input category already exists
+    if (categories.includes(category)) {
+      // this.danger('Entered category already exists!');
+      return;
+    }
+
+    // -- Push to categories array...
+    setCategories((prev) => [...prev, category]);
+
+    // -- ...and create an object in the excercise array
+    setExcercise((prev) => [...prev, { category, words: [] }]);
+
+    // -- Clear input field
+    setAddedCategory('');
+
+    // -- Set selectedCategory
+    setSelectedCategory(category);
+  };
+
+  const handleAddWord = () => {
+    // -- Normalize word
+    const word = normalizeWord(addedWord);
+
+    // -- Check if the input word string is correct
+    if (!wordIsCorrect(word)) {
+      // this.danger('Enter a correct word!');
+      return;
+    }
+
+    // -- Check if a category is selected
+    if (selectedCategory === '') {
+      // this.danger('Choose a category!');
+      return;
+    }
+
+    // -- Add to words
+    if (!words.includes(word)) setWords((prev) => [...prev, word]);
+
+    // -- Push words to the excercise array
+    setExcercise((prev) =>
+      [...prev].map((object) => {
+        if (object.category === selectedCategory) {
+          if (object.words.includes(word)) {
+            // error snackbar: word already exists in category
+            return object;
+          }
+          return {
+            category: object.category,
+            words: [
+              ...object.words,
+              {
+                word: word,
+                shuffled: shuffleWord(word),
+              },
+            ],
+          };
+        }
+        return object;
+      })
+    );
+
+    // -- Clear input field
+    setAddedWord('');
+    // setSelectedCategory(''); // -- Category stays
+  };
+
+  const handleAddExcercise = () => {
+    // -- Push categories, words and excercise object to DB
+    // -- Add unique ID to an excercise
+    // ----------------------------------------------------
+    // -- If success -> remount component
+    resetData();
+  };
+
+  useEffect(() => {
+    resetData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -46,42 +198,81 @@ const JumbleWord = () => {
         </Typography>
       </Container>
 
-      <Divider />
+      <Divider className={classes.titleDivider} />
 
-      <Grid className={classes.mainGrid} container spacing={2}>
+      <Grid container spacing={2}>
+        {/* ADDING DATA */}
         <Grid component="section" item xs={4}>
-          <Paper className={classes.componentBackground}>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, nam
-            nobis? Delectus dicta eveniet, doloribus unde, tempore repellendus quasi,
-            atque sed mollitia accusantium aliquid sunt repellat repudiandae odit
-            quos corrupti. Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Ab iure suscipit recusandae quis. Perspiciatis velit debitis tenetur
-            doloremque esse itaque aliquid quia culpa optio consequatur cumque
-            repellat earum, voluptate accusantium! Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Impedit odio a pariatur ab quos animi non
-            id temporibus, repellat aliquid omnis architecto sapiente tempore debitis
-            maiores dolorem tenetur cumque eos ipsa officia quas. Iste doloremque,
-            incidunt minima, alias facere distinctio delectus voluptatum adipisci vel
-            laboriosam ipsam molestias! Dolores, id odit! Officiis, consectetur sit
-            voluptate quos est itaque, nostrum aliquam tempora consequuntur debitis
-            ex aliquid hic alias quidem nesciunt blanditiis quod laudantium ab
-            voluptatem! Corporis totam in at? Id ut nam qui rem dolores?
-            Necessitatibus distinctio blanditiis ullam! Officiis enim impedit, eaque
-            aliquam quibusdam, obcaecati deleniti neque, vitae rem quo soluta.
+          <Paper className={classes.paper}>
+            <CategorySelect
+              handleChange={handleChangeCategory}
+              items={categories}
+              label="Select category..."
+              labelId="category"
+              value={selectedCategory}
+            />
+            <CategorySelect
+              handleChange={handleChangeCategory}
+              items={categories}
+              label="Select category..."
+              labelId="category"
+              value={selectedCategory}
+            />
           </Paper>
         </Grid>
+
+        {/* SHOWING DATA */}
         <Grid component="section" item xs={8}>
-          <Paper className={classes.componentBackground}>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati fugit
-            beatae earum aliquid. Repellendus quas sed cum voluptates, sint aliquam
-            officiis, magni provident, qui quam tenetur expedita laborum quidem
-            deleniti. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non
-            unde ipsa, nihil architecto dolores repellendus provident id labore
-            delectus sint quibusdam totam, aut recusandae eligendi debitis enim
-            veniam officia? Magnam! Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit. Illo, nulla provident? Asperiores, repellendus nostrum
-            odit ullam perferendis debitis veritatis expedita voluptates nam
-            architecto neque alias, quisquam adipisci ut distinctio cupiditate!
+          <Paper className={classes.paper}>
+            <span>Jumble word show excercise</span>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
+              expedita quia iusto, ab amet debitis. Atque repellat debitis vitae
+              dignissimos facere blanditiis ullam aliquid quasi itaque natus, rerum
+              possimus dolore voluptatum quia nisi reprehenderit velit perferendis
+              fuga a distinctio, modi asperiores iste rem. Suscipit exercitationem
+              provident at quae, quasi laudantium id veritatis quia obcaecati
+              laboriosam sint debitis doloremque ratione. Debitis autem, earum est
+              quod reiciendis dolore quas vitae facilis excepturi vero voluptas eius
+              officiis, nihil modi? Quidem dolorem non nihil consequatur sequi
+              quibusdam quaerat! Accusamus laudantium adipisci voluptas repellat in,
+              sit optio voluptatum minima accusantium, deleniti, illum atque nihil
+              quia. Earum officia sequi maxime reprehenderit mollitia ea placeat,
+              consequuntur nemo, laudantium assumenda illo dicta consequatur optio
+              quos dolore dolorem excepturi quae cupiditate ipsam quod impedit, eaque
+              labore ullam modi. Unde mollitia maxime aut possimus dicta velit,
+              quibusdam, temporibus incidunt exercitationem accusantium accusamus
+              quis molestias libero cupiditate quisquam labore excepturi eligendi
+              aspernatur perferendis ad, quaerat culpa! Quam suscipit quaerat
+              deleniti, dignissimos obcaecati, aliquam excepturi sequi quod aut, sed
+              iusto magni qui odio aperiam voluptate praesentium. Explicabo voluptate
+              quia eligendi autem nulla, molestiae molestias blanditiis dicta sunt
+              minima numquam. Labore illum reprehenderit nam repudiandae, distinctio
+              dicta velit ipsum veniam neque doloremque. Eaque corrupti ipsa
+              veritatis voluptas explicabo reiciendis, maiores quia sint, dolor
+              recusandae modi perferendis saepe odit fuga consequuntur ducimus natus
+              non itaque exercitationem inventore mollitia vero repudiandae illum
+              ipsum! Maxime atque quisquam modi quam similique voluptate molestiae
+              sed perferendis enim, eaque fugiat nostrum dignissimos alias dolorum
+              nulla tenetur temporibus eius esse consequuntur dolores tempore
+              voluptates, eos omnis numquam! Totam nobis nam praesentium
+              exercitationem nostrum enim quod fugit eaque accusamus laborum
+              inventore ea eius, sit blanditiis cumque explicabo soluta similique
+              placeat quidem est vero maxime! Impedit molestiae repellendus
+              voluptatem non amet facilis dicta inventore dolores voluptas? Est quae
+              ut itaque exercitationem. Quidem quia debitis a, harum repellat commodi
+              officia veritatis delectus, vitae nisi eveniet magnam dignissimos
+              obcaecati qui eum atque ducimus quis neque provident deleniti eligendi.
+              Eveniet dolore voluptates sequi adipisci autem doloremque nemo, vero
+              sed. Saepe quisquam, voluptatum delectus, eos dolorem, sed et error
+              quam quae maxime repudiandae ullam! Vitae blanditiis iure doloremque
+              non cupiditate vel saepe? Obcaecati, dicta consequuntur tenetur,
+              architecto consequatur voluptatum id, explicabo nesciunt nostrum
+              blanditiis ex corrupti ullam! Nihil, optio quas, possimus aliquam
+              voluptatum nostrum blanditiis reiciendis magni itaque praesentium sit
+              necessitatibus ex, obcaecati nemo? Temporibus, et dolores ipsa maiores
+              voluptas minus distinctio incidunt veritatis eum amet.
+            </p>
           </Paper>
         </Grid>
       </Grid>

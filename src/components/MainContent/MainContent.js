@@ -5,7 +5,7 @@ import routes from '../../routes/routes';
 
 const MainContentRouter = () => {
   const allRoutes = routes.map(({ path, component }) => (
-    <Route path={path} component={component} exact />
+    <Route key={path} path={path} component={component} exact />
   ));
 
   return <Switch>{allRoutes}</Switch>;

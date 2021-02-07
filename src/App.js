@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Header from './components/Header/Header';
-import MainContentRouter from './components/MainContent/MainContentRouter';
+import MainContent from './components/MainContent/MainContent';
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
         <Header />
       </header>
       <main>
-        <MainContentRouter />
+        <MainContent />
       </main>
     </Router>
   );
