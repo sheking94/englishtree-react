@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CategorySelect = ({ handleChange, items, label, labelId, value }) => {
+const UniversalSelect = ({ handleChange, items, label, labelId, value }) => {
   const classes = useStyles();
 
   const selectItems = items.map((item) => (
@@ -38,4 +38,4 @@ const CategorySelect = ({ handleChange, items, label, labelId, value }) => {
   );
 };
 
-export default CategorySelect;
+export default UniversalSelect;
