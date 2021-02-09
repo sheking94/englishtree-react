@@ -10,11 +10,13 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 
 import { shuffleArray } from '../../../logic/arrayLogic';
 import { normalizeWord, wordIsCorrect } from '../../../logic/wordLogic';
 
-import CategorySelect from './subcomponents/CategorySelect/CategorySelect';
+import UniversalSelect from '../../../components/universal/UniversalSelect/UniversalSelect';
+import UniversalAutocompleteSelectAdd from '../../../components/universal/UniversalAutocompleteSelectAdd/UniversalAutocompleteSelectAdd';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const filter = createFilterOptions();
+
 const shuffleWord = (word) => {
   // create an array from the word
   const wordToArray = word.split('');
@@ -53,6 +57,7 @@ const shuffleWord = (word) => {
 
 const JumbleWord = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [category, setCategory] = useState('');
   const [addedWord, setAddedWord] = useState('');
   const [addedCategory, setAddedCategory] = useState('');
   const [categories, setCategories] = useState([]);
@@ -61,8 +66,28 @@ const JumbleWord = () => {
 
   const classes = useStyles();
 
-  const handleChangeCategory = (event) => {
-    setSelectedCategory(event.target.value);
+  // const handleChangeCategory = (event) => {
+  //   setSelectedCategory(event.target.value);
+  // };
+
+  const handleChangeCategory = (event, newValue) => {
+    if (newValue && newValue.inputValue) {
+      // Create a new value from the user input
+      setCategory(newValue.inputValue);
+    } else {
+      setCategory(newValue);
+    }
+  };
+
+  const filterCategories = (options, params) => {
+    const filtered = filter(options, params);
+
+    // Suggest the creation of a new value
+    if (params.inputValue !== '') {
+      filtered.push(params.inputValue);
+    }
+
+    return filtered;
   };
 
   const resetData = () => {
@@ -204,19 +229,20 @@ const JumbleWord = () => {
         {/* ADDING DATA */}
         <Grid component="section" item xs={4}>
           <Paper className={classes.paper}>
-            <CategorySelect
+            {/* <CategorySelect
               handleChange={handleChangeCategory}
               items={categories}
-              label="Select category..."
+              label="Select a category..."
               labelId="category"
               value={selectedCategory}
-            />
-            <CategorySelect
+            /> */}
+            <UniversalAutocompleteSelectAdd
               handleChange={handleChangeCategory}
-              items={categories}
-              label="Select category..."
-              labelId="category"
-              value={selectedCategory}
+              handleFilter={filterCategories}
+              label="Choose a category..."
+              labelId="jumblewords-autocomplete-category"
+              options={categories}
+              value={category}
             />
           </Paper>
         </Grid>
