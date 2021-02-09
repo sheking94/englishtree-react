@@ -19,7 +19,7 @@ const CategorySelect = ({ handleChange, items, label, labelId, value }) => {
 
   const selectItems = items.map((item) => (
     <MenuItem key={item} value={item}>
-      {item}
+      {item.slice(0, 1).toUpperCase() + item.slice(1)}
     </MenuItem>
   ));
 
