@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   AppBar,
+  Container,
   Drawer,
   IconButton,
   makeStyles,
@@ -49,24 +50,26 @@ const Header = () => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.topBar} position="static">
-        <Toolbar>
-          <IconButton
-            aria-label="menu"
-            color="inherit"
-            edge="start"
-            onClick={handleMenuClick}
-          >
-            <MenuIcon fontSize="large" />
-          </IconButton>
+        <Container disableGutters>
+          <Toolbar>
+            <IconButton
+              aria-label="menu"
+              color="inherit"
+              edge="start"
+              onClick={handleMenuClick}
+            >
+              <MenuIcon fontSize="large" />
+            </IconButton>
 
-          <Typography variant="h3" component="h1" className={classes.title}>
-            Englishtree
-          </Typography>
+            <Typography variant="h3" component="h1" className={classes.title}>
+              Englishtree
+            </Typography>
 
-          <IconButton aria-label="user" color="inherit" edge="end">
-            <AccountCircle fontSize="large" />
-          </IconButton>
-        </Toolbar>
+            <IconButton aria-label="user" color="inherit" edge="end">
+              <AccountCircle fontSize="large" />
+            </IconButton>
+          </Toolbar>
+        </Container>
       </AppBar>
       <Drawer
         aria-label="menu-drawer"
