@@ -1,14 +1,8 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
 
-import { FormControl, makeStyles, TextField } from '@material-ui/core';
+import { FormControl, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    minWidth: '100%',
-  },
-}));
 
 const UniversalAutocompleteSelectAdd = ({
   handleChange,
@@ -18,10 +12,8 @@ const UniversalAutocompleteSelectAdd = ({
   options,
   value,
 }) => {
-  const classes = useStyles();
-
   return (
-    <FormControl className={classes.formControl}>
+    <FormControl>
       <Autocomplete
         value={value}
         onChange={handleChange}

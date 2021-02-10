@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import {
+  Button,
   Container,
   Divider,
   Grid,
@@ -15,27 +16,46 @@ import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { shuffleArray } from '../../../logic/arrayLogic';
 import { normalizeWord, wordIsCorrect } from '../../../logic/wordLogic';
 
-import UniversalSelect from '../../../components/universal/UniversalSelect/UniversalSelect';
+import ShowExcercise from './ShowExcercise/ShowExcercise';
 import UniversalAutocompleteSelectAdd from '../../../components/universal/UniversalAutocompleteSelectAdd/UniversalAutocompleteSelectAdd';
+
+// simulate fetching data
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const getData = async () => {
+  await sleep(500);
+  const loadedCategories = ['sport', 'family', 'animals', 'food'];
+  const loadedWords = [
+    'football',
+    'tennis',
+    'cricket',
+    'swimming',
+    'mother',
+    'father',
+    'son',
+    'daughter',
+    'hamburger',
+    'pizza',
+    'sandwich',
+  ];
+  return { categories: loadedCategories, words: loadedWords };
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     margin: theme.spacing(4),
   },
-  titleDivider: {
-    marginBottom: theme.spacing(2),
-  },
   paper: {
-    backgroundColor: '#f5f5f5',
-    border: '1px solid #eee',
     padding: theme.spacing(2),
+  },
+  form: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(2),
     flexDirection: 'column',
+    flexGrow: 1,
     '& > *': {
-      flexGrow: 1,
-      '&:not(:last-child)': {
-        marginBottom: theme.spacing(2),
-      },
+      minWidth: '100%',
     },
   },
 }));
@@ -56,19 +76,13 @@ const shuffleWord = (word) => {
 };
 
 const JumbleWord = () => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [category, setCategory] = useState('');
-  const [addedWord, setAddedWord] = useState('');
-  const [addedCategory, setAddedCategory] = useState('');
+  const [category, setCategory] = useState(null);
+  const [word, setWord] = useState(null);
   const [categories, setCategories] = useState([]);
   const [words, setWords] = useState([]);
   const [excercise, setExcercise] = useState([]);
 
   const classes = useStyles();
-
-  // const handleChangeCategory = (event) => {
-  //   setSelectedCategory(event.target.value);
-  // };
 
   const handleChangeCategory = (event, newValue) => {
     if (newValue && newValue.inputValue) {
@@ -79,7 +93,16 @@ const JumbleWord = () => {
     }
   };
 
-  const filterCategories = (options, params) => {
+  const handleChangeWord = (event, newValue) => {
+    if (newValue && newValue.inputValue) {
+      // Create a new value from the user input
+      setWord(newValue.inputValue);
+    } else {
+      setWord(newValue);
+    }
+  };
+
+  const filterAutocomplete = (options, params) => {
     const filtered = filter(options, params);
 
     // Suggest the creation of a new value
@@ -90,89 +113,70 @@ const JumbleWord = () => {
     return filtered;
   };
 
-  const resetData = () => {
-    // load data from API
-    const loadedCategories = ['sport', 'family', 'animals', 'food'];
-    const loadedWords = [
-      'football',
-      'tennis',
-      'cricket',
-      'swimming',
-      'mother',
-      'father',
-      'son',
-      'daughter',
-      'hamburger',
-      'pizza',
-      'sandwich',
-    ];
+  const addCategory = () => {
+    // normalize entered string
+    const categoryNormalized = normalizeWord(category);
 
-    // load categories and words
-    setCategories(loadedCategories);
-    setWords(loadedWords);
-
-    // reset excercise
-    setExcercise([]);
-    // create an excercise array from categories
-    categories.forEach((category) => {
-      setExcercise((prev) => [...prev, { category, words: [] }]);
-    });
-  };
-
-  const handleAddCategory = () => {
-    const category = normalizeWord(addedCategory);
-
-    // -- Check if the input category string is correct
-    if (!wordIsCorrect(category)) {
-      // this.danger('Enter a correct category!');
+    // check if the input category already exists in categories
+    if (categories.includes(categoryNormalized)) {
+      // nothing to do
       return;
     }
 
-    // -- Check if the input category already exists
-    if (categories.includes(category)) {
-      // this.danger('Entered category already exists!');
-      return;
-    }
+    // check if the input category string is correct
+    if (!wordIsCorrect(categoryNormalized))
+      throw new Error('Enter a correct category!');
 
-    // -- Push to categories array...
-    setCategories((prev) => [...prev, category]);
+    // set category to normalized category
+    setCategory(categoryNormalized);
 
-    // -- ...and create an object in the excercise array
+    // push to categories array...
+    setCategories((prev) => [...prev, categoryNormalized]);
+
+    // ...and create an object in the excercise array
     setExcercise((prev) => [...prev, { category, words: [] }]);
-
-    // -- Clear input field
-    setAddedCategory('');
-
-    // -- Set selectedCategory
-    setSelectedCategory(category);
   };
 
-  const handleAddWord = () => {
-    // -- Normalize word
-    const word = normalizeWord(addedWord);
+  const addWord = () => {
+    // normalize entered string
+    const wordNormalized = normalizeWord(word);
 
-    // -- Check if the input word string is correct
-    if (!wordIsCorrect(word)) {
-      // this.danger('Enter a correct word!');
+    // check if the input word already exists in words
+    if (words.includes(wordNormalized)) {
+      // nothing to do
       return;
     }
 
-    // -- Check if a category is selected
-    if (selectedCategory === '') {
-      // this.danger('Choose a category!');
+    // check if the input word string is correct
+    if (!wordIsCorrect(wordNormalized)) throw new Error('Enter a correct word!');
+
+    // set category to normalized category
+    setWord(wordNormalized);
+
+    // push to words array
+    setWords((prev) => [...prev, wordNormalized]);
+  };
+
+  const handleAddWordClick = () => {
+    // add category to categories
+    try {
+      addCategory();
+      addWord();
+    } catch (error) {
+      // error snackbar if entered category is incorrect
+      console.error(error.message);
       return;
     }
 
-    // -- Add to words
-    if (!words.includes(word)) setWords((prev) => [...prev, word]);
-
-    // -- Push words to the excercise array
+    // push words to the excercise array
     setExcercise((prev) =>
       [...prev].map((object) => {
-        if (object.category === selectedCategory) {
-          if (object.words.includes(word)) {
-            // error snackbar: word already exists in category
-            return object;
+        if (object.category === category) {
+          for (const wordObject of object.words) {
+            if (wordObject.word === word) {
+              // error snackbar: word already exists in category
+              return object;
+            }
           }
           return {
             category: object.category,
@@ -190,21 +194,36 @@ const JumbleWord = () => {
     );
 
     // -- Clear input field
-    setAddedWord('');
-    // setSelectedCategory(''); // -- Category stays
+    setWord(null);
+    // setCategory(null); // -- Category stays
   };
 
-  const handleAddExcercise = () => {
+  const handleAddExcerciseClick = () => {
     // -- Push categories, words and excercise object to DB
     // -- Add unique ID to an excercise
     // ----------------------------------------------------
     // -- If success -> remount component
-    resetData();
   };
 
   useEffect(() => {
-    resetData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchData = async () => {
+      const data = await getData();
+      const loadedCategories = data.categories;
+      const loadedWords = data.words;
+
+      // load categories and words
+      setCategories(loadedCategories);
+      setWords(loadedWords);
+
+      // reset excercise
+      setExcercise([]);
+      // create an excercise array from categories
+
+      loadedCategories.forEach((element) => {
+        setExcercise((prev) => [...prev, { category: element, words: [] }]);
+      });
+    };
+    fetchData();
   }, []);
 
   return (
@@ -214,94 +233,62 @@ const JumbleWord = () => {
       </Helmet>
 
       <Container>
-        <Typography component="h2" variant="h4">
-          Random letters in a word
-        </Typography>
-        <Typography component="p" gutterBottom variant="subtitle2">
-          Select or add a category and enter a word which will be shuffled and added
-          to the excercise.
-        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography component="h2" variant="h4">
+              Random letters in a word
+            </Typography>
+            <Typography component="p" variant="subtitle2">
+              Select or add a category and enter a word which will be shuffled and
+              added to the excercise.
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+
+          {/* ADDING DATA */}
+          <Grid component="section" item lg={4} md={4} sm={12} xs={12}>
+            <Paper className={classes.paper}>
+              <form className={classes.form}>
+                <UniversalAutocompleteSelectAdd
+                  handleChange={handleChangeCategory}
+                  handleFilter={filterAutocomplete}
+                  label="Category..."
+                  labelId="jumblewords-autocomplete-category"
+                  options={categories}
+                  value={category}
+                />
+                <UniversalAutocompleteSelectAdd
+                  handleChange={handleChangeWord}
+                  handleFilter={filterAutocomplete}
+                  label="Word..."
+                  labelId="jumblewords-autocomplete-words"
+                  options={words}
+                  value={word}
+                />
+                <Button
+                  color="primary"
+                  disabled={!Boolean(category) || !Boolean(word)}
+                  onClick={handleAddWordClick}
+                  size="large"
+                  variant="contained"
+                >
+                  Add word
+                </Button>
+              </form>
+            </Paper>
+          </Grid>
+
+          {/* SHOWING DATA */}
+          <Grid component="section" item lg={8} md={8} sm={12} xs={12}>
+            <Paper className={classes.paper}>
+              <ShowExcercise data={excercise} />
+            </Paper>
+          </Grid>
+        </Grid>
       </Container>
-
-      <Divider className={classes.titleDivider} />
-
-      <Grid container spacing={2}>
-        {/* ADDING DATA */}
-        <Grid component="section" item xs={4}>
-          <Paper className={classes.paper}>
-            {/* <CategorySelect
-              handleChange={handleChangeCategory}
-              items={categories}
-              label="Select a category..."
-              labelId="category"
-              value={selectedCategory}
-            /> */}
-            <UniversalAutocompleteSelectAdd
-              handleChange={handleChangeCategory}
-              handleFilter={filterCategories}
-              label="Choose a category..."
-              labelId="jumblewords-autocomplete-category"
-              options={categories}
-              value={category}
-            />
-          </Paper>
-        </Grid>
-
-        {/* SHOWING DATA */}
-        <Grid component="section" item xs={8}>
-          <Paper className={classes.paper}>
-            <span>Jumble word show excercise</span>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-              expedita quia iusto, ab amet debitis. Atque repellat debitis vitae
-              dignissimos facere blanditiis ullam aliquid quasi itaque natus, rerum
-              possimus dolore voluptatum quia nisi reprehenderit velit perferendis
-              fuga a distinctio, modi asperiores iste rem. Suscipit exercitationem
-              provident at quae, quasi laudantium id veritatis quia obcaecati
-              laboriosam sint debitis doloremque ratione. Debitis autem, earum est
-              quod reiciendis dolore quas vitae facilis excepturi vero voluptas eius
-              officiis, nihil modi? Quidem dolorem non nihil consequatur sequi
-              quibusdam quaerat! Accusamus laudantium adipisci voluptas repellat in,
-              sit optio voluptatum minima accusantium, deleniti, illum atque nihil
-              quia. Earum officia sequi maxime reprehenderit mollitia ea placeat,
-              consequuntur nemo, laudantium assumenda illo dicta consequatur optio
-              quos dolore dolorem excepturi quae cupiditate ipsam quod impedit, eaque
-              labore ullam modi. Unde mollitia maxime aut possimus dicta velit,
-              quibusdam, temporibus incidunt exercitationem accusantium accusamus
-              quis molestias libero cupiditate quisquam labore excepturi eligendi
-              aspernatur perferendis ad, quaerat culpa! Quam suscipit quaerat
-              deleniti, dignissimos obcaecati, aliquam excepturi sequi quod aut, sed
-              iusto magni qui odio aperiam voluptate praesentium. Explicabo voluptate
-              quia eligendi autem nulla, molestiae molestias blanditiis dicta sunt
-              minima numquam. Labore illum reprehenderit nam repudiandae, distinctio
-              dicta velit ipsum veniam neque doloremque. Eaque corrupti ipsa
-              veritatis voluptas explicabo reiciendis, maiores quia sint, dolor
-              recusandae modi perferendis saepe odit fuga consequuntur ducimus natus
-              non itaque exercitationem inventore mollitia vero repudiandae illum
-              ipsum! Maxime atque quisquam modi quam similique voluptate molestiae
-              sed perferendis enim, eaque fugiat nostrum dignissimos alias dolorum
-              nulla tenetur temporibus eius esse consequuntur dolores tempore
-              voluptates, eos omnis numquam! Totam nobis nam praesentium
-              exercitationem nostrum enim quod fugit eaque accusamus laborum
-              inventore ea eius, sit blanditiis cumque explicabo soluta similique
-              placeat quidem est vero maxime! Impedit molestiae repellendus
-              voluptatem non amet facilis dicta inventore dolores voluptas? Est quae
-              ut itaque exercitationem. Quidem quia debitis a, harum repellat commodi
-              officia veritatis delectus, vitae nisi eveniet magnam dignissimos
-              obcaecati qui eum atque ducimus quis neque provident deleniti eligendi.
-              Eveniet dolore voluptates sequi adipisci autem doloremque nemo, vero
-              sed. Saepe quisquam, voluptatum delectus, eos dolorem, sed et error
-              quam quae maxime repudiandae ullam! Vitae blanditiis iure doloremque
-              non cupiditate vel saepe? Obcaecati, dicta consequuntur tenetur,
-              architecto consequatur voluptatum id, explicabo nesciunt nostrum
-              blanditiis ex corrupti ullam! Nihil, optio quas, possimus aliquam
-              voluptatum nostrum blanditiis reiciendis magni itaque praesentium sit
-              necessitatibus ex, obcaecati nemo? Temporibus, et dolores ipsa maiores
-              voluptas minus distinctio incidunt veritatis eum amet.
-            </p>
-          </Paper>
-        </Grid>
-      </Grid>
     </div>
   );
 };
