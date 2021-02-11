@@ -17,6 +17,7 @@ import { normalizeWord, wordIsCorrect } from '../../../logic/wordLogic';
 
 import ShowExcercise from './ShowExcercise/ShowExcercise';
 import UniversalAutocompleteSelectAdd from '../../../components/universal/UniversalAutocompleteSelectAdd/UniversalAutocompleteSelectAdd';
+import UniversalSnackbarAlert from '../../../components/universal/UniversalSnackbarAlert/UniversalSnackbarAlert';
 
 // simulate fetching data
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -74,12 +75,18 @@ const shuffleWord = (word) => {
   return shuffledWord;
 };
 
+// component
 const JumbleWord = () => {
   const [category, setCategory] = useState(null);
   const [word, setWord] = useState(null);
   const [categories, setCategories] = useState([]);
   const [words, setWords] = useState([]);
   const [excercise, setExcercise] = useState([]);
+  const [snackbarData, setSnackbarData] = useState({
+    open: false,
+    message: 'Default snackbar alert.',
+    severity: 'info',
+  });
 
   const classes = useStyles();
 
@@ -110,6 +117,17 @@ const JumbleWord = () => {
     }
 
     return filtered;
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarData((prev) => ({
+      ...prev,
+      open: false,
+    }));
   };
 
   const addCategory = () => {
@@ -162,8 +180,11 @@ const JumbleWord = () => {
       addCategory();
       addWord();
     } catch (error) {
-      // error snackbar if entered category is incorrect
-      console.error(error.message);
+      setSnackbarData({
+        open: true,
+        message: error.message,
+        severity: 'error',
+      });
       return;
     }
 
@@ -173,7 +194,11 @@ const JumbleWord = () => {
         if (object.category === category) {
           for (const wordObject of object.words) {
             if (wordObject.word === word) {
-              // error snackbar: word already exists in category
+              setSnackbarData({
+                open: true,
+                message: 'Entered word already exists in this category!',
+                severity: 'error',
+              });
               return object;
             }
           }
@@ -286,6 +311,7 @@ const JumbleWord = () => {
           </Paper>
         </Grid>
       </Grid>
+      <UniversalSnackbarAlert handleClose={handleSnackbarClose} {...snackbarData} />
     </div>
   );
 };
