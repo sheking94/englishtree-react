@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 
 import {
   Button,
-  Container,
   Divider,
   Grid,
   makeStyles,
@@ -43,7 +42,7 @@ const getData = async () => {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    margin: theme.spacing(4),
+    marginTop: theme.spacing(3),
   },
   paper: {
     padding: theme.spacing(2),
@@ -232,63 +231,61 @@ const JumbleWord = () => {
         <title>ENGLISHTREE - Random word</title>
       </Helmet>
 
-      <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography component="h2" variant="h4">
-              Random letters in a word
-            </Typography>
-            <Typography component="p" variant="subtitle2">
-              Select or add a category and enter a word which will be shuffled and
-              added to the excercise.
-            </Typography>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-
-          {/* ADDING DATA */}
-          <Grid component="section" item lg={4} md={4} sm={12} xs={12}>
-            <Paper className={classes.paper}>
-              <form className={classes.form}>
-                <UniversalAutocompleteSelectAdd
-                  handleChange={handleChangeCategory}
-                  handleFilter={filterAutocomplete}
-                  label="Category..."
-                  labelId="jumblewords-autocomplete-category"
-                  options={categories}
-                  value={category}
-                />
-                <UniversalAutocompleteSelectAdd
-                  handleChange={handleChangeWord}
-                  handleFilter={filterAutocomplete}
-                  label="Word..."
-                  labelId="jumblewords-autocomplete-words"
-                  options={words}
-                  value={word}
-                />
-                <Button
-                  color="primary"
-                  disabled={!Boolean(category) || !Boolean(word)}
-                  onClick={handleAddWordClick}
-                  size="large"
-                  variant="contained"
-                >
-                  Add word
-                </Button>
-              </form>
-            </Paper>
-          </Grid>
-
-          {/* SHOWING DATA */}
-          <Grid component="section" item lg={8} md={8} sm={12} xs={12}>
-            <Paper className={classes.paper}>
-              <ShowExcercise data={excercise} />
-            </Paper>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography component="h2" variant="h4">
+            Random letters in a word
+          </Typography>
+          <Typography component="p" variant="subtitle2">
+            Select or add a category and enter a word which will be shuffled and
+            added to the excercise.
+          </Typography>
         </Grid>
-      </Container>
+
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+
+        {/* ADDING DATA */}
+        <Grid component="section" item lg={4} md={4} sm={12} xs={12}>
+          <Paper className={classes.paper}>
+            <form className={classes.form}>
+              <UniversalAutocompleteSelectAdd
+                handleChange={handleChangeCategory}
+                handleFilter={filterAutocomplete}
+                label="Category..."
+                labelId="jumblewords-autocomplete-category"
+                options={categories}
+                value={category}
+              />
+              <UniversalAutocompleteSelectAdd
+                handleChange={handleChangeWord}
+                handleFilter={filterAutocomplete}
+                label="Word..."
+                labelId="jumblewords-autocomplete-words"
+                options={words}
+                value={word}
+              />
+              <Button
+                color="primary"
+                disabled={!Boolean(category) || !Boolean(word)}
+                onClick={handleAddWordClick}
+                size="large"
+                variant="contained"
+              >
+                Add word
+              </Button>
+            </form>
+          </Paper>
+        </Grid>
+
+        {/* SHOWING DATA */}
+        <Grid component="section" item lg={8} md={8} sm={12} xs={12}>
+          <Paper className={classes.paper}>
+            <ShowExcercise data={excercise} />
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 };

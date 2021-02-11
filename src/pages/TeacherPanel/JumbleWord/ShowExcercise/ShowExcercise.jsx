@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ShowExcercise = ({ data }) => {
-  console.log(data);
   const categories = data.length
     ? data.map(({ category, words }) => {
         const wordsEl = words.length
