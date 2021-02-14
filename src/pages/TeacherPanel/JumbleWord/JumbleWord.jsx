@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet';
+import uniqid from 'uniqid';
 
 import {
   Button,
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// filter for autocomplete
 const filter = createFilterOptions();
 
 const shuffleWord = (word) => {
@@ -78,10 +80,11 @@ const shuffleWord = (word) => {
 // component
 const JumbleWord = () => {
   const [category, setCategory] = useState(null);
-  const [word, setWord] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [word, setWord] = useState(null);
   const [words, setWords] = useState([]);
   const [excercise, setExcercise] = useState([]);
+  const [addExcerciseCount, setAddExcerciseCount] = useState(0);
   const [snackbarData, setSnackbarData] = useState({
     open: false,
     message: 'Default snackbar alert.',
@@ -223,12 +226,39 @@ const JumbleWord = () => {
   };
 
   const handleAddExcerciseClick = () => {
-    // -- Push categories, words and excercise object to DB
-    // -- Add unique ID to an excercise
-    // ----------------------------------------------------
-    // -- If success -> remount component
+    // push categories, words and excercise object to DB
+    // create object to send
+    const excerciseToSend = {
+      // add unique id
+      id: uniqid('jumbleword-'),
+      // delete empty categories
+      excercise: excercise.filter((object) => object.words.length > 0),
+    };
+
+    // push to DB
+    console.log(excerciseToSend);
+
+    // reset data
+    setAddExcerciseCount((prev) => prev + 1);
   };
 
+  const handleDeleteWordClick = (wordToDeleteCategory, wordToDelete) => {
+    setExcercise((prev) =>
+      [...prev].map((object) => {
+        if (object.category === wordToDeleteCategory) {
+          return {
+            category: object.category,
+            words: object.words.filter(
+              (wordObject) => wordObject.word !== wordToDelete
+            ),
+          };
+        }
+        return object;
+      })
+    );
+  };
+
+  // data fetch
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData();
@@ -248,7 +278,13 @@ const JumbleWord = () => {
       });
     };
     fetchData();
-  }, []);
+  }, [addExcerciseCount]);
+
+  // sorting words and categories
+  useEffect(() => {
+    setCategories((prev) => prev.sort());
+    setWords((prev) => prev.sort());
+  }, [categories, words]);
 
   return (
     <div className={classes.root}>
@@ -272,7 +308,7 @@ const JumbleWord = () => {
         </Grid>
 
         {/* ADDING DATA */}
-        <Grid component="section" item lg={4} md={4} sm={12} xs={12}>
+        <Grid component="section" item lg={6} md={6} sm={12} xs={12}>
           <Paper className={classes.paper}>
             <form className={classes.form}>
               <UniversalAutocompleteSelectAdd
@@ -305,9 +341,13 @@ const JumbleWord = () => {
         </Grid>
 
         {/* SHOWING DATA */}
-        <Grid component="section" item lg={8} md={8} sm={12} xs={12}>
+        <Grid component="section" item lg={6} md={6} sm={12} xs={12}>
           <Paper className={classes.paper}>
-            <ShowExcercise data={excercise} />
+            <ShowExcercise
+              data={excercise}
+              handleAddExcercise={handleAddExcerciseClick}
+              handleDelete={handleDeleteWordClick}
+            />
           </Paper>
         </Grid>
       </Grid>

@@ -18,6 +18,5 @@ export const shuffleArray = (array) => {
   return array;
 };
 
-export const removeFromArray = (array, index, elements = 1) => {
-  array.splice(index, elements);
-};
+export const removeFromArray = (array, element) =>
+  array.filter((el) => el !== element);

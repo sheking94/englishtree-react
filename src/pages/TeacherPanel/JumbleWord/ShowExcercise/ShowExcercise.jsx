@@ -1,27 +1,34 @@
 import React from 'react';
 
-const ShowExcercise = ({ data }) => {
-  const categories = data.length
-    ? data.map(({ category, words }) => {
-        const wordsEl = words.length
-          ? words.map(({ word, shuffled }) => (
-              <div key={word}>
-                <p>{word}</p>
-                <p>{shuffled}</p>
-              </div>
-            ))
-          : `No words in ${category}.`;
+import { Typography } from '@material-ui/core';
 
-        return (
-          <div key={category}>
-            <h2>{category}</h2>
-            {wordsEl}
-          </div>
-        );
-      })
-    : 'Nothing to show.';
+import Categories from './Categories/Categories';
 
-  return <div>{categories}</div>;
+const ShowExcercise = ({ data, handleAddExcercise, handleDelete }) => {
+  const isExcerciseVisible = () => {
+    if (data.length) {
+      let i = 0;
+      data.forEach((element) => {
+        if (element.words.length) ++i;
+      });
+      return Boolean(i);
+    }
+    return false;
+  };
+
+  return (
+    <>
+      {isExcerciseVisible() ? (
+        <Categories
+          data={data}
+          handleAddExcercise={handleAddExcercise}
+          handleDelete={handleDelete}
+        />
+      ) : (
+        <Typography>Nothing to show, add some words...</Typography>
+      )}
+    </>
+  );
 };
 
 export default ShowExcercise;
