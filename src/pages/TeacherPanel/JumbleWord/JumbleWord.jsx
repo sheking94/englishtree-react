@@ -251,6 +251,10 @@ const JumbleWord = () => {
 
   const handleAddExcerciseClick = () => {
     // push categories, words and excercise object to DB
+
+    // data of words and categories to send
+    const dataToSend = data;
+
     // create object to send
     const excerciseToSend = {
       // add unique id
@@ -260,6 +264,7 @@ const JumbleWord = () => {
     };
 
     // push to DB
+    console.log(dataToSend);
     console.log(excerciseToSend);
 
     // reset data - trigger useEffect by changing addExcerciseCount value
