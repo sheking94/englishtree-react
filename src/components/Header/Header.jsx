@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     background: `linear-gradient(
-      45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.main}
+      45deg, ${theme.palette.primary.dark}, ${theme.palette.primary.main}
       )`,
     display: 'flex',
   },

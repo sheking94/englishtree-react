@@ -46,7 +46,12 @@ const Categories = ({ data, handleAddExcercise, handleDelete }) => {
       >
         {categories}
       </List>
-      <Button onClick={handleAddExcercise} size="large" variant="contained">
+      <Button
+        color="primary"
+        onClick={handleAddExcercise}
+        size="large"
+        variant="contained"
+      >
         Add to excercise
       </Button>
     </div>
