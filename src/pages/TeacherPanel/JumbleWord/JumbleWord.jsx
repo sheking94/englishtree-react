@@ -24,21 +24,25 @@ import UniversalSnackbarAlert from '../../../components/universal/UniversalSnack
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const getData = async () => {
   await sleep(500);
-  const loadedCategories = ['sport', 'family', 'animals', 'food'];
-  const loadedWords = [
-    'football',
-    'tennis',
-    'cricket',
-    'swimming',
-    'mother',
-    'father',
-    'son',
-    'daughter',
-    'hamburger',
-    'pizza',
-    'sandwich',
+  const data = [
+    {
+      category: 'sport',
+      words: ['football', 'tennis', 'cricket', 'swimming'],
+    },
+    {
+      category: 'family',
+      words: ['mother', 'father', 'son', 'daughter'],
+    },
+    {
+      category: 'animals',
+      words: [],
+    },
+    {
+      category: 'food',
+      words: ['hamburger', 'pizza', 'sandwich'],
+    },
   ];
-  return { categories: loadedCategories, words: loadedWords };
+  return data;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -80,9 +84,8 @@ const shuffleWord = (word) => {
 // component
 const JumbleWord = () => {
   const [category, setCategory] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [data, setData] = useState([]);
   const [word, setWord] = useState(null);
-  const [words, setWords] = useState([]);
   const [excercise, setExcercise] = useState([]);
   const [addExcerciseCount, setAddExcerciseCount] = useState(0);
   const [snackbarData, setSnackbarData] = useState({
@@ -138,7 +141,7 @@ const JumbleWord = () => {
     const categoryNormalized = normalizeWord(category);
 
     // check if the input category already exists in categories
-    if (categories.includes(categoryNormalized)) {
+    if (sortedCategories().includes(categoryNormalized)) {
       // nothing to do
       return;
     }
@@ -151,10 +154,10 @@ const JumbleWord = () => {
     setCategory(categoryNormalized);
 
     // push to categories array...
-    setCategories((prev) => [...prev, categoryNormalized]);
+    setData((prev) => [...prev, { category: categoryNormalized, words: [] }]);
 
     // ...and create an object in the excercise array
-    setExcercise((prev) => [...prev, { category, words: [] }]);
+    setExcercise((prev) => [...prev, { category: categoryNormalized, words: [] }]);
   };
 
   const addWord = () => {
@@ -162,7 +165,7 @@ const JumbleWord = () => {
     const wordNormalized = normalizeWord(word);
 
     // check if the input word already exists in words
-    if (words.includes(wordNormalized)) {
+    if (sortedWordsInCategory().includes(wordNormalized)) {
       // nothing to do
       return;
     }
@@ -170,15 +173,21 @@ const JumbleWord = () => {
     // check if the input word string is correct
     if (!wordIsCorrect(wordNormalized)) throw new Error('Enter a correct word!');
 
-    // set category to normalized category
+    // set word to normalized word
     setWord(wordNormalized);
 
-    // push to words array
-    setWords((prev) => [...prev, wordNormalized]);
+    // push to words
+    setData((prev) =>
+      [...prev].map((el) => {
+        if (el.category === category)
+          return { category: el.category, words: [...el.words, wordNormalized] };
+        return el;
+      })
+    );
   };
 
   const handleAddWordClick = () => {
-    // add category to categories
+    // add category and word to data
     try {
       addCategory();
       addWord();
@@ -220,9 +229,24 @@ const JumbleWord = () => {
       })
     );
 
-    // -- Clear input field
+    // clear input field
     setWord(null);
-    // setCategory(null); // -- Category stays
+    // category stays
+    // setCategory(null);
+  };
+
+  // create list of sorted categories
+  const sortedCategories = () => data.map((el) => el.category).sort();
+
+  // create list of sorted words in category
+  const sortedWordsInCategory = () => {
+    let wordsInCategory = [];
+    data.forEach((el) => {
+      if (el.category === category)
+        // shallow copy
+        wordsInCategory = el.words.slice();
+    });
+    return wordsInCategory.sort();
   };
 
   const handleAddExcerciseClick = () => {
@@ -238,7 +262,7 @@ const JumbleWord = () => {
     // push to DB
     console.log(excerciseToSend);
 
-    // reset data
+    // reset data - trigger useEffect by changing addExcerciseCount value
     setAddExcerciseCount((prev) => prev + 1);
   };
 
@@ -261,30 +285,20 @@ const JumbleWord = () => {
   // data fetch
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getData();
-      const loadedCategories = data.categories;
-      const loadedWords = data.words;
+      const fetchedData = await getData();
 
-      // load categories and words
-      setCategories(loadedCategories);
-      setWords(loadedWords);
+      setData(fetchedData);
 
       // reset excercise
       setExcercise([]);
-      // create an excercise array from categories
 
-      loadedCategories.forEach((element) => {
-        setExcercise((prev) => [...prev, { category: element, words: [] }]);
+      // create an excercise array from categories
+      fetchedData.forEach((el) => {
+        setExcercise((prev) => [...prev, { category: el.category, words: [] }]);
       });
     };
     fetchData();
   }, [addExcerciseCount]);
-
-  // sorting words and categories
-  useEffect(() => {
-    setCategories((prev) => prev.sort());
-    setWords((prev) => prev.sort());
-  }, [categories, words]);
 
   return (
     <div className={classes.root}>
@@ -316,7 +330,7 @@ const JumbleWord = () => {
                 handleFilter={filterAutocomplete}
                 label="Category..."
                 labelId="jumblewords-autocomplete-category"
-                options={categories}
+                options={sortedCategories()}
                 value={category}
               />
               <UniversalAutocompleteSelectAdd
@@ -324,7 +338,7 @@ const JumbleWord = () => {
                 handleFilter={filterAutocomplete}
                 label="Word..."
                 labelId="jumblewords-autocomplete-words"
-                options={words}
+                options={sortedWordsInCategory()}
                 value={word}
               />
               <Button
