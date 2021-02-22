@@ -13,7 +13,7 @@ let theme = createMuiTheme({
       main: '#ce4116',
     },
     secondary: {
-      main: '#e03131',
+      main: '#ce1616',
     },
     error: {
       main: red[600],
