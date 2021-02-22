@@ -4,18 +4,16 @@ import {
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
-const themeType = 'dark';
+const themeType = 'light';
 
 let theme = createMuiTheme({
   palette: {
     type: themeType,
     primary: {
-      light: '#33a750',
-      main: '#1b7e34',
-      dark: '#135a25',
+      main: '#ce4116',
     },
     secondary: {
-      main: '#135a45',
+      main: '#e03131',
     },
     error: {
       main: red[600],
