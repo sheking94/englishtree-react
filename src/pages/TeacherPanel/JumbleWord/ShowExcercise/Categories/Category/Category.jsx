@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  Box,
   Collapse,
   ListItem,
   ListItemText,
@@ -21,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     gap: theme.spacing(1),
   },
-  table: {
-    marginBottom: theme.spacing(2),
+  tableBox: {
+    margin: theme.spacing(1),
   },
   tableHeader: {
     '& *': {
@@ -63,18 +64,25 @@ const Category = ({ category, handleDelete, words }) => {
         {collapseOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={collapseOpen} timeout="auto" unmountOnExit>
-        <TableContainer>
-          <Table className={classes.table} size="small">
-            <TableHead className={classes.tableHeader}>
-              <TableRow>
-                <TableCell>Word</TableCell>
-                <TableCell>Shuffled word</TableCell>
-                <TableCell align="right">Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{wordElements}</TableBody>
-          </Table>
-        </TableContainer>
+        <Box
+          border={1}
+          borderBottom={0}
+          borderColor="grey.300"
+          className={classes.tableBox}
+        >
+          <TableContainer>
+            <Table size="small">
+              <TableHead className={classes.tableHeader}>
+                <TableRow>
+                  <TableCell>Word</TableCell>
+                  <TableCell>Shuffled word</TableCell>
+                  <TableCell align="right">Delete</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>{wordElements}</TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Collapse>
     </li>
   );
