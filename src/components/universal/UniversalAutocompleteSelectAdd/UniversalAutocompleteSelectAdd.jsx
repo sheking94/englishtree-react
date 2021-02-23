@@ -3,21 +3,34 @@ import React from 'react';
 
 import { FormControl, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { createFilterOptions } from '@material-ui/lab';
+
+const filter = createFilterOptions();
 
 const UniversalAutocompleteSelectAdd = ({
   handleChange,
-  handleFilter,
   label,
   labelId,
   options,
   value,
 }) => {
+  const filterAutocomplete = (options, params) => {
+    const filtered = filter(options, params);
+
+    // Suggest the creation of a new value
+    if (params.inputValue !== '') {
+      filtered.push(params.inputValue);
+    }
+
+    return filtered;
+  };
+
   return (
     <FormControl>
       <Autocomplete
         value={value}
         onChange={handleChange}
-        filterOptions={handleFilter}
+        filterOptions={filterAutocomplete}
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
