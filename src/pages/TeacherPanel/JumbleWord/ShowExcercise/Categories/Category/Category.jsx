@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
-import Word from '../Word/Word';
+import Word from './Word/Word';
 
 const useStyles = makeStyles((theme) => ({
   categoryName: {
