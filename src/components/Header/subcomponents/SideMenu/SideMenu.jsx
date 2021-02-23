@@ -17,7 +17,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import ExpandedList from './subcomponents/ExpandedList/ExpandedList';
+import ExpandedList from '../ExpandedList/ExpandedList';
 
 import { menuItemsStudent, menuItemsTeacher } from './menuItems';
 

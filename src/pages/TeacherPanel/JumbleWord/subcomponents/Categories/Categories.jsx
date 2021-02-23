@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, List, ListSubheader, makeStyles } from '@material-ui/core';
 
-import Category from './Category/Category';
+import Category from '../Category/Category';
 
 const useStyles = makeStyles((theme) => ({
   root: {

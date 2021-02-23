@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
+
 import SideMenu from './subcomponents/SideMenu/SideMenu';
 
 import '../../theme/fonts.css';

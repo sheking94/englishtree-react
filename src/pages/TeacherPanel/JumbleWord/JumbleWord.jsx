@@ -16,7 +16,7 @@ import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { shuffleArray } from '../../../logic/arrayLogic';
 import { normalizeWord, wordIsCorrect } from '../../../logic/wordLogic';
 
-import ShowExcercise from './ShowExcercise/ShowExcercise';
+import ShowExcercise from './subcomponents/ShowExcercise/ShowExcercise';
 import UniversalAutocompleteSelectAdd from '../../../components/universal/UniversalAutocompleteSelectAdd/UniversalAutocompleteSelectAdd';
 import UniversalSnackbarAlert from '../../../components/universal/UniversalSnackbarAlert/UniversalSnackbarAlert';
 

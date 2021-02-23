@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Typography } from '@material-ui/core';
 
-import Categories from './Categories/Categories';
+import Categories from '../Categories/Categories';
 
 const ShowExcercise = ({ data, handleAddExcercise, handleDelete }) => {
   const isExcerciseVisible = () => {
