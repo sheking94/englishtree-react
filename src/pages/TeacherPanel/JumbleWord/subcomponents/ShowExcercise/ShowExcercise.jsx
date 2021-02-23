@@ -1,17 +1,22 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { Typography } from '@material-ui/core';
 
 import Categories from '../Categories/Categories';
 
-const ShowExcercise = ({ data, handleAddExcercise, handleDelete }) => {
+const ShowExcercise = () => {
+  const excercise = useSelector((state) => state.jumbleWord.excercise);
+
   const isExcerciseVisible = () => {
-    if (data.length) {
-      let i = 0;
-      data.forEach((element) => {
-        if (element.words.length) ++i;
-      });
-      return Boolean(i);
+    if (excercise.length) {
+      // check all elements' words array length, return true if there is at least one not empty category
+      for (const el of excercise) {
+        if (el.words.length) {
+          return true;
+        }
+      }
+      return false;
     }
     return false;
   };
@@ -19,11 +24,7 @@ const ShowExcercise = ({ data, handleAddExcercise, handleDelete }) => {
   return (
     <>
       {isExcerciseVisible() ? (
-        <Categories
-          data={data}
-          handleAddExcercise={handleAddExcercise}
-          handleDelete={handleDelete}
-        />
+        <Categories />
       ) : (
         <Typography>Nothing to show, add some words...</Typography>
       )}
