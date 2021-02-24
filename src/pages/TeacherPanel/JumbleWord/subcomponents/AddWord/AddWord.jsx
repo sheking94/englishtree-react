@@ -7,11 +7,10 @@ import {
   setCategory,
   setDataCategory,
   setDataSingleWord,
-  setExcerciseEmptyCategory,
   setExcerciseSingleWord,
-  setSnackbar,
   setWord,
 } from '../../../../../store/reducers/jumbleWordSlice';
+import { setSnackbar } from '../../../../../store/reducers/snackbarSlice';
 
 import { shuffleArray } from '../../../../../logic/arrayLogic';
 import { normalizeWord, wordIsCorrect } from '../../../../../logic/wordLogic';
@@ -104,11 +103,8 @@ const AddWord = () => {
     // set category to normalized category
     dispatch(setCategory(categoryNormalized));
 
-    // push to categories array...
+    // push to categories array
     dispatch(setDataCategory(categoryNormalized));
-
-    // ...and create an object in the excercise array
-    dispatch(setExcerciseEmptyCategory(categoryNormalized));
   };
 
   const addWord = () => {
@@ -150,7 +146,17 @@ const AddWord = () => {
     const shuffledWord = shuffleWord(word);
 
     // push words to the excercise array
-    dispatch(setExcerciseSingleWord({ word: word, shuffled: shuffledWord }));
+    try {
+      dispatch(setExcerciseSingleWord({ word: word, shuffled: shuffledWord }));
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          open: true,
+          message: error.message,
+          severity: 'error',
+        })
+      );
+    }
 
     // clear input field
     dispatch(setWord(null));

@@ -1,30 +1,107 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Typography } from '@material-ui/core';
+import uniqid from 'uniqid';
 
-import Categories from '../Categories/Categories';
+import {
+  Button,
+  List,
+  ListSubheader,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+
+import { incrementAddExcerciseCount } from '../../../../../store/reducers/jumbleWordSlice';
+import { setSnackbar } from '../../../../../store/reducers/snackbarSlice';
+
+import Category from '../Category/Category';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  listHeader: {
+    marginBlockStart: 0,
+    marginBlockEnd: 0,
+    fontSize: '1.2rem',
+    textAlign: 'center',
+  },
+}));
 
 const ShowExcercise = () => {
+  const data = useSelector((state) => state.jumbleWord.data);
   const excercise = useSelector((state) => state.jumbleWord.excercise);
 
-  const isExcerciseVisible = () => {
-    if (excercise.length) {
-      // check all elements' words array length, return true if there is at least one not empty category
-      for (const el of excercise) {
-        if (el.words.length) {
-          return true;
-        }
-      }
-      return false;
-    }
-    return false;
+  const dispatch = useDispatch();
+
+  const classes = useStyles();
+
+  const handleAddExcercise = () => {
+    // push categories, words and excercise object to DB
+
+    // data of words and categories to send
+    const dataToSend = data;
+
+    // create object to send
+    const excerciseToSend = {
+      // add unique id
+      id: uniqid('jumbleword-'),
+      // delete empty categories
+      excercise: excercise,
+    };
+
+    // push to DB
+    console.log(dataToSend);
+    console.log(excerciseToSend);
+
+    // display snackbar when successfully added
+    dispatch(
+      setSnackbar({
+        open: true,
+        message: 'Excercise added!',
+        severity: 'success',
+      })
+    );
+
+    // reset data - trigger useEffect by changing addExcerciseCount value
+    dispatch(incrementAddExcerciseCount());
   };
+
+  const excerciseSorted = excercise
+    .slice()
+    .sort((a, b) => (a.category > b.category ? 1 : -1));
+
+  const categories = excerciseSorted.map(({ category, words }) => (
+    <Category category={category} key={category} words={words} />
+  ));
 
   return (
     <>
-      {isExcerciseVisible() ? (
-        <Categories />
+      {excercise.length ? (
+        <div className={classes.root}>
+          <List
+            subheader={
+              <ListSubheader
+                className={classes.listHeader}
+                component="h3"
+                disableSticky
+              >
+                Words in excercise
+              </ListSubheader>
+            }
+          >
+            {categories}
+          </List>
+          <Button
+            color="primary"
+            onClick={handleAddExcercise}
+            size="large"
+            variant="contained"
+          >
+            Add to excercise
+          </Button>
+        </div>
       ) : (
         <Typography>Nothing to show, add some words...</Typography>
       )}

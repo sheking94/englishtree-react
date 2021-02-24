@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import { Divider, Grid, makeStyles, Paper } from '@material-ui/core';
 
-import { setSnackbar } from '../../store/reducers/jumbleWordSlice';
+import { setSnackbar } from '../../store/reducers/snackbarSlice';
 
 import UniversalSnackbarAlert from '../universal/UniversalSnackbarAlert/UniversalSnackbarAlert';
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const JumbleWord = ({ addData, displayData, header, title }) => {
-  const snackbarData = useSelector((state) => state.jumbleWord.snackbarData);
+  const snackbarData = useSelector((state) => state.snackbar.snackbarData);
 
   const dispatch = useDispatch();
 

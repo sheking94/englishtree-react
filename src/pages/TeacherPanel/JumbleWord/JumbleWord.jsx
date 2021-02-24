@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  setData,
-  setExcercise,
-  setExcerciseEmptyCategory,
-} from '../../../store/reducers/jumbleWordSlice';
+import { setData, setExcercise } from '../../../store/reducers/jumbleWordSlice';
 
 import ExcerciseGenerator from '../../../components/ExcerciseGenerator/ExcerciseGenerator';
 import Header from './subcomponents/Header/Header';
@@ -49,15 +45,11 @@ const JumbleWord = () => {
     const fetchData = async () => {
       const fetchedData = await getData();
 
+      // set data
       dispatch(setData(fetchedData));
 
       // reset excercise
       dispatch(setExcercise([]));
-
-      // create an excercise array from categories
-      fetchedData.forEach((el) => {
-        dispatch(setExcerciseEmptyCategory(el.category));
-      });
     };
     fetchData();
   }, [addExcerciseCount, dispatch]);
