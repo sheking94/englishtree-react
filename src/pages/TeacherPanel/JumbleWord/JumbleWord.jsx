@@ -127,10 +127,4 @@ const JumbleWord = () => {
   );
 };
 
-const JumbleWordStoreProvider = () => (
-  <Provider store={store}>
-    <JumbleWord />
-  </Provider>
-);
-
-export default JumbleWordStoreProvider;
+export default JumbleWord;
