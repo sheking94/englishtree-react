@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Category = ({ category, handleDelete, words }) => {
+const Category = ({ category, words }) => {
   const [collapseOpen, setCollapseOpen] = useState(true);
 
   const classes = useStyles();
@@ -42,13 +42,7 @@ const Category = ({ category, handleDelete, words }) => {
   };
 
   const wordElements = words.map(({ word, shuffled }) => (
-    <Word
-      category={category}
-      handleDelete={handleDelete}
-      key={word}
-      shuffled={shuffled}
-      word={word}
-    />
+    <Word category={category} key={word} shuffled={shuffled} word={word} />
   ));
 
   return (

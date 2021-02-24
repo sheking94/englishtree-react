@@ -1,6 +1,11 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import uniqid from 'uniqid';
 
 import { Button, List, ListSubheader, makeStyles } from '@material-ui/core';
+
+import { incrementAddExcerciseCount } from '../../../../../store/reducers/jumbleWordSlice';
 
 import Category from '../Category/Category';
 
@@ -17,21 +22,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Categories = ({ data, handleAddExcercise, handleDelete }) => {
+const Categories = () => {
+  const excercise = useSelector((state) => state.jumbleWord.excercise);
+
+  const dispatch = useDispatch();
+
   const classes = useStyles();
 
-  const categories = data.map(({ category, words }) => {
-    if (words.length) {
-      return (
-        <Category
-          category={category}
-          handleDelete={handleDelete}
-          key={category}
-          words={words}
-        />
-      );
-    }
+  const handleAddExcercise = () => {
+    // push categories, words and excercise object to DB
 
+    // data of words and categories to send
+    const dataToSend = excercise;
+
+    // create object to send
+    const excerciseToSend = {
+      // add unique id
+      id: uniqid('jumbleword-'),
+      // delete empty categories
+      excercise: excercise.filter((object) => object.words.length),
+    };
+
+    // push to DB
+    console.log(dataToSend);
+    console.log(excerciseToSend);
+
+    // reset data - trigger useEffect by changing addExcerciseCount value
+    dispatch(incrementAddExcerciseCount());
+  };
+
+  const excerciseSorted = excercise
+    .slice()
+    .sort((a, b) => (a.category > b.category ? 1 : -1));
+
+  const categories = excerciseSorted.map(({ category, words }) => {
+    if (words.length) {
+      return <Category category={category} key={category} words={words} />;
+    }
     return null;
   });
 
