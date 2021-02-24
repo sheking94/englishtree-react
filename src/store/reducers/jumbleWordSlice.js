@@ -7,11 +7,6 @@ export const jumbleWordSlice = createSlice({
     category: null,
     data: [],
     excercise: [],
-    snackbarData: {
-      open: false,
-      message: 'Default snackbar alert.',
-      severity: 'info',
-    },
     word: null,
   },
   // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -42,7 +37,7 @@ export const jumbleWordSlice = createSlice({
       state.excercise = action.payload;
     },
     setExcerciseDeleteWord: (state, action) => {
-      state.excercise = state.excercise.map((el) => {
+      const excercise = state.excercise.map((el) => {
         if (el.category === action.payload.category) {
           return {
             category: el.category,
@@ -53,45 +48,58 @@ export const jumbleWordSlice = createSlice({
         }
         return el;
       });
-    },
-    setExcerciseEmptyCategory: (state, action) => {
-      state.excercise = [
-        ...state.excercise,
-        { category: action.payload, words: [] },
-      ];
+      state.excercise = excercise.filter((el) => el.words.length);
     },
     setExcerciseSingleWord: (state, action) => {
-      state.excercise = state.excercise.map((el) => {
-        if (el.category === state.category) {
-          for (const wordObject of el.words) {
-            if (wordObject.word === state.word) {
-              state.snackbarData = {
-                open: true,
-                message: 'Entered word already exists in this category!',
-                severity: 'error',
-              };
-              return el;
-            }
-          }
-          return {
-            category: el.category,
+      if (state.excercise === []) {
+        state.excercise = [
+          {
+            category: state.category,
             words: [
-              ...el.words,
               {
                 word: action.payload.word,
                 shuffled: action.payload.shuffled,
               },
             ],
-          };
+          },
+        ];
+      } else {
+        // if category exists
+        if (state.excercise.map((el) => el.category).includes(state.category)) {
+          state.excercise = state.excercise.map((el) => {
+            if (el.category === state.category) {
+              // if word exists
+              if (el.words.map((word) => word.word).includes(state.word)) {
+                throw new Error('Entered word already exists in this category!');
+              }
+              return {
+                category: el.category,
+                words: [
+                  ...el.words,
+                  {
+                    word: action.payload.word,
+                    shuffled: action.payload.shuffled,
+                  },
+                ],
+              };
+            }
+            return el;
+          });
+        } else {
+          state.excercise = [
+            ...state.excercise,
+            {
+              category: state.category,
+              words: [
+                {
+                  word: action.payload.word,
+                  shuffled: action.payload.shuffled,
+                },
+              ],
+            },
+          ];
         }
-        return el;
-      });
-    },
-    setSnackbar: (state, action) => {
-      state.snackbarData = {
-        ...state.snackbarData,
-        ...action.payload,
-      };
+      }
     },
     setWord: (state, action) => {
       state.word = action.payload;
@@ -108,9 +116,7 @@ export const {
   setDataSingleWord,
   setExcercise,
   setExcerciseDeleteWord,
-  setExcerciseEmptyCategory,
   setExcerciseSingleWord,
-  setSnackbar,
   setWord,
 } = jumbleWordSlice.actions;
 
