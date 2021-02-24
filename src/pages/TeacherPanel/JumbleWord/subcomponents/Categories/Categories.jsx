@@ -5,7 +5,10 @@ import uniqid from 'uniqid';
 
 import { Button, List, ListSubheader, makeStyles } from '@material-ui/core';
 
-import { incrementAddExcerciseCount } from '../../../../../store/reducers/jumbleWordSlice';
+import {
+  incrementAddExcerciseCount,
+  setSnackbar,
+} from '../../../../../store/reducers/jumbleWordSlice';
 
 import Category from '../Category/Category';
 
@@ -46,6 +49,15 @@ const Categories = () => {
     // push to DB
     console.log(dataToSend);
     console.log(excerciseToSend);
+
+    // display snackbar when successfully added
+    dispatch(
+      setSnackbar({
+        open: true,
+        message: 'Excercise added!',
+        severity: 'success',
+      })
+    );
 
     // reset data - trigger useEffect by changing addExcerciseCount value
     dispatch(incrementAddExcerciseCount());
