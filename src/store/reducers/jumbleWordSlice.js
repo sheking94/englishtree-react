@@ -87,14 +87,14 @@ export const jumbleWordSlice = createSlice({
         return el;
       });
     },
-    setWord: (state, action) => {
-      state.word = action.payload;
-    },
     setSnackbar: (state, action) => {
       state.snackbarData = {
         ...state.snackbarData,
         ...action.payload,
       };
+    },
+    setWord: (state, action) => {
+      state.word = action.payload;
     },
   },
 });
