@@ -1,5 +1,6 @@
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
 import JumbleWord from '../pages/TeacherPanel/JumbleWord/JumbleWord';
+import JumbleSentence from '../pages/TeacherPanel/JumbleSentence/JumbleSentence';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import StudentPanel from '../pages/StudentPanel/StudentPanel';
 import TeacherPanel from '../pages/TeacherPanel/TeacherPanel';
@@ -27,7 +28,7 @@ const routes = [
   },
   {
     path: '/teacher/jumblesentence',
-    component: TeacherPanel,
+    component: JumbleSentence,
   },
   {
     path: '/teacher/jumbletext',

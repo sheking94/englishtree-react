@@ -5,6 +5,7 @@ export const normalizeSentence = (str) => {
   // -- Remove extra white spaces created by normalizing special marks
   // -- Trim again to remove space after last sentence's ending mark
   // -- Return the string
+  // -- Example: 'My son, Mark, is doing his homework now.'
   return str
     .trim()
     .replace(/\s\s+/g, ' ')
@@ -20,25 +21,24 @@ export const normalizeSentenceToArray = (str) => {
   // -- Remove white space at start and end
   // -- Replace commas and sentence end marks for easy splitting into an array
   // -- Remove unnecessary whitespaces
+  // -- Example: ['My', 'son', ',', 'Mark', ',', 'is', 'doing', 'his', 'homework', 'now', '.']
   return str
     .trim()
     .replace(/,/g, ' , ')
-    .replace(/\./g, ' .')
-    .replace(/!/g, ' !')
-    .replace(/\?/g, ' ?')
-    .replace(/\s\s+/g, ' ');
-};
-
-export const sentenceToArray = (str) => {
-  // -- Split into an array
-  // -- Return the array
-  return str.split(' ');
+    .replace(/\./g, ' . ')
+    .replace(/!/g, ' ! ')
+    .replace(/\?/g, ' ? ')
+    .replace(/\s\s+/g, ' ')
+    .trim()
+    .split(' ');
 };
 
 export const arrayToSentence = (arr) => {
   // -- Join sentence array into one string sentence
   // -- Join with one space
   // -- Remove spaces before special marks
+  // -- Example: 'My son, Mark, is doing his homework now.'
+  // -- Example shuffled: 'homework son Mark is. doing My, his, now'
   return arr
     .join(' ')
     .replace(/( ,)/g, ',')
