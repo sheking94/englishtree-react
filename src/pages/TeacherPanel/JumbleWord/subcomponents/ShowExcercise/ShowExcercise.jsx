@@ -47,7 +47,6 @@ const ShowExcercise = () => {
     const excerciseToSend = {
       // add unique id
       id: uniqid('jumbleword-'),
-      // delete empty categories
       excercise: excercise,
     };
 
