@@ -171,14 +171,14 @@ const AddWord = () => {
       <UniversalAutocompleteSelectAdd
         handleChange={handleChangeCategory}
         label="Category..."
-        labelId="jumblewords-autocomplete-category"
+        labelId="jumbleword-autocomplete-category"
         options={sortedCategories}
         value={category}
       />
       <UniversalAutocompleteSelectAdd
         handleChange={handleChangeWord}
         label="Word..."
-        labelId="jumblewords-autocomplete-words"
+        labelId="jumbleword-autocomplete-words"
         options={sortedWordsInCategory}
         value={word}
       />
