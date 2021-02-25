@@ -4,6 +4,7 @@ export const snackbarSlice = createSlice({
   name: 'snackbar',
   initialState: {
     snackbarData: {
+      autoHide: 3000,
       open: false,
       message: 'Default snackbar alert.',
       severity: 'info',
