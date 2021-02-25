@@ -30,6 +30,8 @@ const shuffleWord = (word) => {
   return shuffledWord;
 };
 
+const sortCategories = (data) => data.map((el) => el.category).sort();
+
 const sortWordsInCategory = (category, data) => {
   let wordsInCategory = [];
   data.forEach((el) => {
@@ -63,7 +65,7 @@ const AddWord = () => {
   const dispatch = useDispatch();
 
   // create list of sorted categories
-  const sortedCategories = data.map((el) => el.category).sort();
+  const sortedCategories = sortCategories(data);
 
   // create list of sorted words in category
   const sortedWordsInCategory = sortWordsInCategory(category, data);
