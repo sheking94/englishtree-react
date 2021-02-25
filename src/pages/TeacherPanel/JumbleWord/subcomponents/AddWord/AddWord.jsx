@@ -71,21 +71,15 @@ const AddWord = () => {
   const sortedWordsInCategory = sortWordsInCategory(category, data);
 
   const handleChangeCategory = (event, newValue) => {
-    if (newValue && newValue.inputValue) {
-      // Create a new value from the user input
-      dispatch(setCategory(newValue.inputValue));
-    } else {
-      dispatch(setCategory(newValue));
-    }
+    dispatch(
+      setCategory(newValue && newValue.inputValue ? newValue.inputValue : newValue)
+    );
   };
 
   const handleChangeWord = (event, newValue) => {
-    if (newValue && newValue.inputValue) {
-      // Create a new value from the user input
-      dispatch(setWord(newValue.inputValue));
-    } else {
-      dispatch(setWord(newValue));
-    }
+    dispatch(
+      setWord(newValue && newValue.inputValue ? newValue.inputValue : newValue)
+    );
   };
 
   const addCategory = () => {
