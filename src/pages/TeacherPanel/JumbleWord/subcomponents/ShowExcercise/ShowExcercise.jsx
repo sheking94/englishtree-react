@@ -98,7 +98,7 @@ const ShowExcercise = () => {
             size="large"
             variant="contained"
           >
-            Add to excercise
+            Add excercise
           </Button>
         </div>
       ) : (
