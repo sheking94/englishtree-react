@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.6.2",
     "clsx": "^1.1.1",
     "fontsource-roboto": "^4.0.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
