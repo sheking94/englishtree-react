@@ -15,7 +15,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import SideMenu from './subcomponents/SideMenu/SideMenu';
 
-import '../../theme/fonts.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/reducers/themeSlice';
 
@@ -31,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    fontFamily: '"Caveat Brush", cursive',
-    letterSpacing: theme.spacing(0.4),
-    textAlign: 'center',
-    textTransform: 'uppercase',
+    textAlign: 'left',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
 }));
 
@@ -73,8 +71,8 @@ const Header = () => {
               <MenuIcon fontSize="large" />
             </IconButton>
 
-            <Typography variant="h3" component="h1" className={classes.title}>
-              Englishtree
+            <Typography variant="h4" component="h1" className={classes.title}>
+              englishtree
             </Typography>
 
             <IconButton
