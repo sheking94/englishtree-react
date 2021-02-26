@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  list: {
+    paddingTop: 0,
+  },
 }));
 
 const ShowExcercise = () => {
@@ -73,7 +76,7 @@ const ShowExcercise = () => {
     <>
       {excercise.length ? (
         <div className={classes.root}>
-          <List>{categories}</List>
+          <List className={classes.list}>{categories}</List>
           <Button
             color="secondary"
             onClick={handleAddExcercise}
