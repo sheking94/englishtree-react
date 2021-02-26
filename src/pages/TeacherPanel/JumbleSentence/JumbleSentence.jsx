@@ -50,11 +50,7 @@ const JumbleSentence = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedData = await getData();
-
       dispatch(setData(fetchedData));
-
-      // reset excercise
-      dispatch(setExcercise([]));
     };
     fetchData();
   }, [addExcerciseCount, dispatch]);

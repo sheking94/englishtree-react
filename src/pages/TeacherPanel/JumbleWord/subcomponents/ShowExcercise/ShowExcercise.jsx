@@ -11,7 +11,10 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { incrementAddExcerciseCount } from '../../../../../store/reducers/jumbleWordSlice';
+import {
+  incrementAddExcerciseCount,
+  setExcercise,
+} from '../../../../../store/reducers/jumbleWordSlice';
 import { setSnackbar } from '../../../../../store/reducers/snackbarSlice';
 
 import Category from '../Category/Category';
@@ -63,7 +66,10 @@ const ShowExcercise = () => {
       })
     );
 
-    // reset data - trigger useEffect by changing addExcerciseCount value
+    // reset data
+    dispatch(setExcercise([]));
+
+    // trigger useEffect by changing addExcerciseCount value
     dispatch(incrementAddExcerciseCount());
   };
 

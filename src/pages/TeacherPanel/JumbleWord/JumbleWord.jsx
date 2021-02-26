@@ -44,12 +44,7 @@ const JumbleWord = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedData = await getData();
-
-      // set data
       dispatch(setData(fetchedData));
-
-      // reset excercise
-      dispatch(setExcercise([]));
     };
     fetchData();
   }, [addExcerciseCount, dispatch]);
