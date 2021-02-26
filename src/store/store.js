@@ -25,6 +25,8 @@ store.subscribe(
   throttle(() => {
     saveState({
       theme: store.getState().theme,
+      jumbleWord: store.getState().jumbleWord,
+      jumbleSentence: store.getState().jumbleSentence,
     });
   }, 1000)
 );
