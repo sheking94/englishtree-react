@@ -3,13 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import uniqid from 'uniqid';
 
-import {
-  Button,
-  List,
-  ListSubheader,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Button, List, makeStyles, Typography } from '@material-ui/core';
 
 import {
   incrementAddExcerciseCount,
@@ -24,11 +18,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  listHeader: {
-    marginBlockStart: 0,
-    marginBlockEnd: 0,
-    fontSize: '1.2rem',
-    textAlign: 'center',
+  list: {
+    paddingTop: 0,
   },
 }));
 
@@ -85,19 +76,7 @@ const ShowExcercise = () => {
     <>
       {excercise.length ? (
         <div className={classes.root}>
-          <List
-            subheader={
-              <ListSubheader
-                className={classes.listHeader}
-                component="h3"
-                disableSticky
-              >
-                Words in excercise
-              </ListSubheader>
-            }
-          >
-            {categories}
-          </List>
+          <List className={classes.list}>{categories}</List>
           <Button
             color="primary"
             onClick={handleAddExcercise}
