@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setData, setExcercise } from '../../../store/reducers/jumbleSentenceSlice';
+import { setData } from '../../../store/reducers/jumbleSentenceSlice';
 
 import ExcerciseGenerator from '../../../components/ExcerciseGenerator/ExcerciseGenerator';
 import Header from './subcomponents/Header/Header';
