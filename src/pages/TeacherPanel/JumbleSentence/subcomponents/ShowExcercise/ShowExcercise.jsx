@@ -75,7 +75,7 @@ const ShowExcercise = () => {
         <div className={classes.root}>
           <List>{categories}</List>
           <Button
-            color="primary"
+            color="secondary"
             onClick={handleAddExcercise}
             size="large"
             variant="contained"
