@@ -18,7 +18,7 @@ const theme = (themeType) => {
         main: '#ef6c00',
       },
       secondary: {
-        main: '#7cb342',
+        main: '#4b9122',
       },
     },
     overrides: {
