@@ -4,10 +4,6 @@ import { Provider } from 'react-redux';
 
 import reportWebVitals from './reportWebVitals';
 
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import theme from './theme/theme';
-import 'fontsource-roboto';
-
 import store from './store/store';
 
 import App from './App';
@@ -15,10 +11,7 @@ import App from './App';
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

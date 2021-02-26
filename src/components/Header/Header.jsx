@@ -9,12 +9,15 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import SideMenu from './subcomponents/SideMenu/SideMenu';
 
 import '../../theme/fonts.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeTheme } from '../../store/reducers/themeSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     background: `linear-gradient(
-      45deg, ${theme.palette.primary.dark}, ${theme.palette.primary.main}
+      45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main}
       )`,
     display: 'flex',
   },
@@ -38,7 +41,11 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const [menuIsOpened, setMenuIsOpened] = useState(false);
 
+  const themeType = useSelector((state) => state.theme.type);
+
   const classes = useStyles();
+
+  const dispatch = useDispatch();
 
   const handleMenuClick = () => {
     setMenuIsOpened(true);
@@ -46,6 +53,10 @@ const Header = () => {
 
   const handleMenuClose = () => {
     setMenuIsOpened(false);
+  };
+
+  const handleThemeClick = () => {
+    dispatch(changeTheme());
   };
 
   return (
@@ -66,8 +77,17 @@ const Header = () => {
               Englishtree
             </Typography>
 
-            <IconButton aria-label="user" color="inherit" edge="end">
-              <AccountCircle fontSize="large" />
+            <IconButton
+              aria-label="user"
+              color="inherit"
+              edge="end"
+              onClick={handleThemeClick}
+            >
+              {themeType === 'light' ? (
+                <Brightness4Icon fontSize="large" />
+              ) : (
+                <Brightness7Icon fontSize="large" />
+              )}
             </IconButton>
           </Toolbar>
         </Container>
