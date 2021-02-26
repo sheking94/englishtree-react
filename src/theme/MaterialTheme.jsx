@@ -21,6 +21,15 @@ const theme = (themeType) => {
         main: '#7cb342',
       },
     },
+    overrides: {
+      MuiTableRow: {
+        root: {
+          '&:last-child td': {
+            borderBottom: 0,
+          },
+        },
+      },
+    },
   });
   createdTheme = responsiveFontSizes(createdTheme);
   return createdTheme;

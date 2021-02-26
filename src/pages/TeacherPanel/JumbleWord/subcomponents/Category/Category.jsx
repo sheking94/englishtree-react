@@ -13,6 +13,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import grey from '@material-ui/core/colors/grey';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 import Word from '../Word/Word';
@@ -23,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(1),
   },
   tableBox: {
+    borderColor: theme.palette.type === 'light' ? grey[400] : grey[700],
+    borderRadius: 6,
     margin: theme.spacing(1),
   },
   tableHeader: {
@@ -58,12 +61,7 @@ const Category = ({ category, words }) => {
         {collapseOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={collapseOpen} timeout="auto" unmountOnExit>
-        <Box
-          border={1}
-          borderBottom={0}
-          borderColor="grey.300"
-          className={classes.tableBox}
-        >
+        <Box border={1} className={classes.tableBox}>
           <TableContainer>
             <Table size="small">
               <TableHead className={classes.tableHeader}>
