@@ -15,6 +15,10 @@ export const menuItemsStudent = [
 
 export const menuItemsTeacher = [
   {
+    text: 'Multiple choice',
+    to: '/teacher/abcsentence',
+  },
+  {
     text: 'Random letters in a word',
     to: '/teacher/jumbleword',
   },

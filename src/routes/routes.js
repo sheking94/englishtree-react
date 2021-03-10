@@ -1,3 +1,4 @@
+import ABCSentence from '../pages/TeacherPanel/ABCSentence/ABCSentence';
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
 import JumbleWord from '../pages/TeacherPanel/JumbleWord/JumbleWord';
 import JumbleSentence from '../pages/TeacherPanel/JumbleSentence/JumbleSentence';
@@ -21,6 +22,10 @@ const routes = [
   {
     path: '/student/3',
     component: StudentPanel,
+  },
+  {
+    path: '/teacher/abcsentence',
+    component: ABCSentence,
   },
   {
     path: '/teacher/jumbleword',
