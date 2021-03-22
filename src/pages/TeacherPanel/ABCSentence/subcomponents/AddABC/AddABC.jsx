@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Button, makeStyles, TextField } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 
 import {
   setAnswers,
@@ -16,15 +16,14 @@ import {
 import { setSnackbar } from '../../../../../store/reducers/snackbarSlice';
 
 import {
-  arrayToSentence,
   normalizeSentence,
-  normalizeSentenceToArray,
   sentenceIsCorrect,
 } from '../../../../../logic/sentenceLogic';
 import { normalizeWord, wordIsCorrect } from '../../../../../logic/wordLogic';
 
 import UniversalAutocompleteSelectAdd from '../../../../../components/universal/UniversalAutocompleteSelectAdd/UniversalAutocompleteSelectAdd';
-import UniversalRadioGroup from '../../../../../components/universal/UniversalRadioGroup/UniversalRadioGroup';
+import UniversalSelect from '../../../../../components/universal/UniversalSelect/UniversalSelect';
+import ABCRadioGroup from '../ABCRadioGroup/ABCRadioGroup';
 
 const sortCategories = (data) => data.map((el) => el.category).sort();
 
@@ -51,8 +50,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const excerciseTypes = {
+  TRUE_FALSE: 'True / False',
+  ABC: '3 answers',
+  ABCD: '4 answers',
+};
+
 const AddABC = () => {
-  const [answersNumber, setAnswersNumber] = useState(3);
+  const [excerciseType, setExcerciseType] = useState(excerciseTypes.ABC);
 
   const category = useSelector((state) => state.abcSentence.category);
   const data = useSelector((state) => state.abcSentence.data);
@@ -82,13 +87,8 @@ const AddABC = () => {
     );
   };
 
-  const handleChangeAnswersNumber = (event) => {
-    console.log(answers);
-    if (Number(event.target.value) < 0) {
-      setAnswersNumber(0);
-      return;
-    }
-    setAnswersNumber(Number(event.target.value));
+  const handleChangeExcerciseType = (event) => {
+    setExcerciseType(event.target.value);
   };
 
   const handleChangeRadioInput = (event) => {
@@ -122,6 +122,7 @@ const AddABC = () => {
     dispatch(setDataCategory(categoryNormalized));
   };
 
+  // to do
   const addSentence = () => {
     // normalize entered string
     const sentenceNormalized = normalizeSentence(sentence);
@@ -143,6 +144,7 @@ const AddABC = () => {
     dispatch(setDataSingleSentence(sentenceNormalized));
   };
 
+  // to do
   const handleAddSentenceClick = () => {
     // add category and word to data
     try {
@@ -185,43 +187,60 @@ const AddABC = () => {
     // setCategory(null);
   };
 
-  // set empty answers
+  // set answers
   useEffect(() => {
-    const answersArray = new Array(answersNumber).fill('');
-    dispatch(setAnswers(answersArray));
-  }, [answersNumber, dispatch]);
+    const setRadioAnswers = () => {
+      switch (excerciseType) {
+        case excerciseTypes.TRUE_FALSE:
+          dispatch(setAnswers(['TRUE', 'FALSE']));
+          dispatch(setCorrect(0));
+          break;
+        case excerciseTypes.ABC:
+          dispatch(setAnswers(new Array(3).fill('')));
+          dispatch(setCorrect(0));
+          break;
+        case excerciseTypes.ABCD:
+          dispatch(setAnswers(new Array(4).fill('')));
+          dispatch(setCorrect(0));
+          break;
+        default:
+          break;
+      }
+    };
+    setRadioAnswers();
+  }, [excerciseType, dispatch]);
 
   return (
     <form className={classes.root}>
       <UniversalAutocompleteSelectAdd
         handleChange={handleChangeCategory}
         label="Category..."
-        labelId="jumblesentence-autocomplete-category"
+        labelId="abcsentence-autocomplete-category"
         options={sortedCategories}
         value={category}
       />
       <UniversalAutocompleteSelectAdd
         handleChange={handleChangeSentence}
         label="Sentence..."
-        labelId="jumblesentence-autocomplete-sentence"
+        labelId="abcsentence-autocomplete-sentence"
         options={sortedSentencesInCategory}
         value={sentence}
       />
       {/* maybe change to buttons +/- and add/delete elements from answers array */}
-      <TextField
-        id="answers-number"
-        label="Number of possible answers..."
-        type="number"
-        variant="outlined"
-        value={answersNumber}
-        onChange={handleChangeAnswersNumber}
+      <UniversalSelect
+        handleChange={handleChangeExcerciseType}
+        items={Object.values(excerciseTypes)}
+        label="Excercise type..."
+        labelId="abscentence-select-excercisetype"
+        value={excerciseType}
       />
-      <UniversalRadioGroup
+      <ABCRadioGroup
         answers={answers}
         correct={correct}
         changeInput={handleChangeRadioInput}
         changeRadio={handleChangeRadioValue}
         header="Answers:"
+        tf={excerciseType === excerciseTypes.TRUE_FALSE}
       />
       <Button
         color="primary"
