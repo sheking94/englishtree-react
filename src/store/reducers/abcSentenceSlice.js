@@ -4,7 +4,9 @@ export const abcSentenceSlice = createSlice({
   name: 'abcSentence',
   initialState: {
     addExcerciseCount: 0,
+    answers: [],
     category: null,
+    correct: 0,
     data: [],
     excercise: [],
     sentence: null,
@@ -17,8 +19,17 @@ export const abcSentenceSlice = createSlice({
     incrementAddExcerciseCount: (state) => {
       state.addExcerciseCount += 1;
     },
+    setAnswers: (state, action) => {
+      state.answers = action.payload;
+    },
+    setAnswersSingle: (state, action) => {
+      state.answers[action.payload.index] = action.payload.value;
+    },
     setCategory: (state, action) => {
       state.category = action.payload;
+    },
+    setCorrect: (state, action) => {
+      state.correct = action.payload;
     },
     setData: (state, action) => {
       state.data = action.payload;
@@ -113,7 +124,10 @@ export const abcSentenceSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   incrementAddExcerciseCount,
+  setAnswers,
+  setAnswersSingle,
   setCategory,
+  setCorrect,
   setData,
   setDataCategory,
   setDataSingleSentence,

@@ -16,32 +16,19 @@ const getData = async () => {
     {
       category: 'present perfect',
       sentences: [
-        {
-          sentence: "Our dinner's ready. The table has already been _.",
-          answers: ['lain', 'lied', 'laid', 'lay'],
-          correct: 1,
-        },
+        "Our dinner's ready. The table has already been _. (lain, lied, laid, lay)",
       ],
     },
     {
       category: 'past simple',
       sentences: [
-        {
-          sentence: 'Sara _ her best at the exam, but she failed it anyway.',
-          answers: ['went', 'did', 'made', 'attempted'],
-          correct: 1,
-        },
+        'Sara _ her best at the exam, but she failed it anyway. (went, did, made, attempted)',
       ],
     },
     {
       category: 'passive form',
       sentences: [
-        {
-          sentence:
-            'The soldiers were _ to run with a complete field equipment for three hours',
-          answers: ['bother', 'mess', 'prevent', 'occupy'],
-          correct: 0,
-        },
+        'The soldiers were _ to run with a complete field equipment for three hours. (bother, mess, prevent, occupy)',
       ],
     },
   ];
