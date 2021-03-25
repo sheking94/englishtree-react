@@ -186,6 +186,7 @@ const AddSentence = () => {
         handleChange={handleChangeSentence}
         label="Sentence..."
         labelId="jumblesentence-autocomplete-sentence"
+        multiline
         options={sortedSentencesInCategory}
         value={sentence}
       />
