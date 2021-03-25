@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Button, makeStyles } from '@material-ui/core';
@@ -87,9 +87,8 @@ const AddABC = () => {
     );
   };
 
-  const handleChangeExcerciseType = (event) => {
-    dispatch(setExcerciseType(event.target.value));
-    switch (event.target.value) {
+  const resetExcerciseType = (type) => {
+    switch (type) {
       case excerciseTypes.TRUE_FALSE:
         dispatch(setAnswers(['TRUE', 'FALSE']));
         dispatch(setCorrect(0));
@@ -103,10 +102,15 @@ const AddABC = () => {
         dispatch(setCorrect(0));
         break;
       default:
-        dispatch(setAnswers(new Array(3).fill('')));
+        dispatch(setAnswers([]));
         dispatch(setCorrect(0));
         break;
     }
+  };
+
+  const handleChangeExcerciseType = (event) => {
+    dispatch(setExcerciseType(event.target.value));
+    resetExcerciseType(event.target.value);
   };
 
   const handleChangeRadioInput = (event) => {
@@ -218,6 +222,7 @@ const AddABC = () => {
         handleChange={handleChangeSentence}
         label="Sentence..."
         labelId="abcsentence-autocomplete-sentence"
+        multiline
         options={sortedSentencesInCategory}
         value={sentence}
       />
