@@ -38,7 +38,7 @@ const ABCRadioGroup = ({
 
     if (tf) {
       elements.push(
-        <div className={classes.radioInput}>
+        <div key={0} className={classes.radioInput}>
           <FormControlLabel
             value={0}
             label="TRUE"
@@ -47,7 +47,7 @@ const ABCRadioGroup = ({
         </div>
       );
       elements.push(
-        <div className={classes.radioInput}>
+        <div key={1} className={classes.radioInput}>
           <FormControlLabel
             value={1}
             label="FALSE"

@@ -11,6 +11,7 @@ import {
   setDataCategory,
   setDataSingleSentence,
   setExcerciseSingleSentence,
+  setExcerciseType,
   setSentence,
 } from '../../../../../store/reducers/abcSentenceSlice';
 import { setSnackbar } from '../../../../../store/reducers/snackbarSlice';
@@ -57,10 +58,9 @@ const excerciseTypes = {
 };
 
 const AddABC = () => {
-  const [excerciseType, setExcerciseType] = useState(excerciseTypes.ABC);
-
   const category = useSelector((state) => state.abcSentence.category);
   const data = useSelector((state) => state.abcSentence.data);
+  const excerciseType = useSelector((state) => state.abcSentence.excerciseType);
   const sentence = useSelector((state) => state.abcSentence.sentence);
   const answers = useSelector((state) => state.abcSentence.answers);
   const correct = useSelector((state) => state.abcSentence.correct);
@@ -88,7 +88,25 @@ const AddABC = () => {
   };
 
   const handleChangeExcerciseType = (event) => {
-    setExcerciseType(event.target.value);
+    dispatch(setExcerciseType(event.target.value));
+    switch (event.target.value) {
+      case excerciseTypes.TRUE_FALSE:
+        dispatch(setAnswers(['TRUE', 'FALSE']));
+        dispatch(setCorrect(0));
+        break;
+      case excerciseTypes.ABC:
+        dispatch(setAnswers(new Array(3).fill('')));
+        dispatch(setCorrect(0));
+        break;
+      case excerciseTypes.ABCD:
+        dispatch(setAnswers(new Array(4).fill('')));
+        dispatch(setCorrect(0));
+        break;
+      default:
+        dispatch(setAnswers(new Array(3).fill('')));
+        dispatch(setCorrect(0));
+        break;
+    }
   };
 
   const handleChangeRadioInput = (event) => {
@@ -187,29 +205,6 @@ const AddABC = () => {
     // setCategory(null);
   };
 
-  // set answers
-  useEffect(() => {
-    const setRadioAnswers = () => {
-      switch (excerciseType) {
-        case excerciseTypes.TRUE_FALSE:
-          dispatch(setAnswers(['TRUE', 'FALSE']));
-          dispatch(setCorrect(0));
-          break;
-        case excerciseTypes.ABC:
-          dispatch(setAnswers(new Array(3).fill('')));
-          dispatch(setCorrect(0));
-          break;
-        case excerciseTypes.ABCD:
-          dispatch(setAnswers(new Array(4).fill('')));
-          dispatch(setCorrect(0));
-          break;
-        default:
-          break;
-      }
-    };
-    setRadioAnswers();
-  }, [excerciseType, dispatch]);
-
   return (
     <form className={classes.root}>
       <UniversalAutocompleteSelectAdd
@@ -244,7 +239,9 @@ const AddABC = () => {
       />
       <Button
         color="primary"
-        disabled={!Boolean(category) || !Boolean(sentence)}
+        disabled={
+          !Boolean(category) || !Boolean(sentence) || !Boolean(excerciseType)
+        }
         onClick={handleAddSentenceClick}
         size="large"
         variant="contained"

@@ -9,6 +9,7 @@ export const abcSentenceSlice = createSlice({
     correct: 0,
     data: [],
     excercise: [],
+    excerciseType: '',
     sentence: null,
   },
   // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -115,6 +116,9 @@ export const abcSentenceSlice = createSlice({
         }
       }
     },
+    setExcerciseType: (state, action) => {
+      state.excerciseType = action.payload;
+    },
     setSentence: (state, action) => {
       state.sentence = action.payload;
     },
@@ -134,6 +138,7 @@ export const {
   setExcercise,
   setExcerciseDeleteSentence,
   setExcerciseSingleSentence,
+  setExcerciseType,
   setSentence,
 } = abcSentenceSlice.actions;
 
