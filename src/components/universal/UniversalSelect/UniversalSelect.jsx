@@ -10,13 +10,14 @@ const UniversalSelect = ({ handleChange, items, label, labelId, value }) => {
   ));
 
   return (
-    <FormControl>
+    <FormControl variant="outlined">
       <InputLabel id={`select-input-label-${labelId}`}>{label}</InputLabel>
       <Select
         labelId={`select-input-label-${labelId}`}
         id={`select-input-${labelId}`}
         value={value}
         onChange={handleChange}
+        label={label}
       >
         {selectItems}
       </Select>
