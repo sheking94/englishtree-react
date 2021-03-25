@@ -11,6 +11,7 @@ const UniversalAutocompleteSelectAdd = ({
   handleChange,
   label,
   labelId,
+  multiline = false,
   options,
   value,
 }) => {
@@ -45,7 +46,12 @@ const UniversalAutocompleteSelectAdd = ({
         renderOption={(option) => option}
         freeSolo
         renderInput={(params) => (
-          <TextField {...params} label={label} variant="outlined" />
+          <TextField
+            {...params}
+            multiline={multiline}
+            label={label}
+            variant="outlined"
+          />
         )}
       />
     </FormControl>
