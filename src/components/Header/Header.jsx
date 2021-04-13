@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   AppBar,
+  Button,
   Container,
   Drawer,
   IconButton,
@@ -17,6 +18,7 @@ import SideMenu from './subcomponents/SideMenu/SideMenu';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/reducers/themeSlice';
+import { changeLoginState } from '../../store/reducers/authSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const [menuIsOpened, setMenuIsOpened] = useState(false);
 
+  const signedIn = useSelector((state) => state.auth.signedIn);
   const themeType = useSelector((state) => state.theme.type);
 
   const classes = useStyles();
@@ -55,6 +58,10 @@ const Header = () => {
 
   const handleThemeClick = () => {
     dispatch(changeTheme());
+  };
+
+  const handleLoginChange = () => {
+    dispatch(changeLoginState());
   };
 
   return (
@@ -74,6 +81,10 @@ const Header = () => {
             <Typography variant="h4" component="h1" className={classes.title}>
               englishtree
             </Typography>
+
+            <Button onClick={handleLoginChange}>
+              {signedIn ? 'Sign Out' : 'Sign In'}
+            </Button>
 
             <IconButton
               aria-label="user"
