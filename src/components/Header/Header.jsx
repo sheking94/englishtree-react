@@ -82,7 +82,7 @@ const Header = () => {
               englishtree
             </Typography>
 
-            <Button onClick={handleLoginChange}>
+            <Button color="inherit" variant="outlined" onClick={handleLoginChange}>
               {signedIn ? 'Sign Out' : 'Sign In'}
             </Button>
 

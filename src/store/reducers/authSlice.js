@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    signedIn: true,
+    signedIn: false,
   },
   // Redux Toolkit allows us to write "mutating" logic in reducers. It
   // doesn't actually mutate the state because it uses the Immer library,
