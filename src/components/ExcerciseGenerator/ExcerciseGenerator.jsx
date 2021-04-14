@@ -1,13 +1,8 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Helmet } from 'react-helmet';
 
 import { Divider, Grid, makeStyles, Paper } from '@material-ui/core';
-
-import { setSnackbar } from '../../store/reducers/snackbarSlice';
-
-import UniversalSnackbarAlert from '../universal/UniversalSnackbarAlert/UniversalSnackbarAlert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,23 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const JumbleWord = ({ addData, displayData, header, title }) => {
-  const snackbarData = useSelector((state) => state.snackbar.snackbarData);
-
-  const dispatch = useDispatch();
-
   const classes = useStyles();
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    dispatch(
-      setSnackbar({
-        open: false,
-      })
-    );
-  };
 
   return (
     <div className={classes.root}>
@@ -63,7 +42,6 @@ const JumbleWord = ({ addData, displayData, header, title }) => {
           <Paper className={classes.paper}>{displayData}</Paper>
         </Grid>
       </Grid>
-      <UniversalSnackbarAlert handleClose={handleSnackbarClose} {...snackbarData} />
     </div>
   );
 };
