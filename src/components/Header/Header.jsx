@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   AppBar,
@@ -16,9 +17,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import SideMenu from './subcomponents/SideMenu/SideMenu';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { signOut } from '../../store/reducers/authSlice';
 import { changeTheme } from '../../store/reducers/themeSlice';
-import { changeLoginState } from '../../store/reducers/authSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
+  },
+  signOutButton: {
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -60,8 +63,8 @@ const Header = () => {
     dispatch(changeTheme());
   };
 
-  const handleLoginChange = () => {
-    dispatch(changeLoginState());
+  const handleSignOutClick = () => {
+    dispatch(signOut());
   };
 
   return (
@@ -82,9 +85,15 @@ const Header = () => {
               englishtree
             </Typography>
 
-            <Button color="inherit" variant="outlined" onClick={handleLoginChange}>
-              {signedIn ? 'Sign Out' : 'Sign In'}
-            </Button>
+            {signedIn && (
+              <Button
+                color="inherit"
+                variant="outlined"
+                onClick={handleSignOutClick}
+              >
+                Sign Out
+              </Button>
+            )}
 
             <IconButton
               aria-label="user"

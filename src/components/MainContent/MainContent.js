@@ -2,9 +2,10 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { Container, Typography } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
 import routes from '../../routes/routes';
+import LoginForm from '../LoginForm/LoginForm';
 
 const MainContentRouter = () => {
   const signedIn = useSelector((state) => state.auth.signedIn);
@@ -15,7 +16,9 @@ const MainContentRouter = () => {
 
   return (
     <Container>
-      <Switch>{signedIn ? allRoutes : <Typography>LOGIN PAGE</Typography>}</Switch>
+      <Switch>
+        {signedIn ? allRoutes : <Route path="/" component={LoginForm} />}
+      </Switch>
     </Container>
   );
 };
