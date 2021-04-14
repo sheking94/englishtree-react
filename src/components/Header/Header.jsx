@@ -76,6 +76,7 @@ const Header = () => {
               aria-label="menu"
               color="inherit"
               edge="start"
+              disabled={!signedIn}
               onClick={handleMenuClick}
             >
               <MenuIcon fontSize="large" />

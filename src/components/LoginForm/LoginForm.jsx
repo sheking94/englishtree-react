@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     width: '100%',
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
   button: {
     minWidth: 100,

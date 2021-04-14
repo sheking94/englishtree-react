@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import {
   Collapse,
@@ -10,7 +9,6 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography,
 } from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
@@ -65,8 +63,6 @@ const SideMenu = () => {
   const [isStudentListExpanded, setIsStudentListExpanded] = useState(false);
   const [isTeacherListExpanded, setIsTeacherListExpanded] = useState(false);
 
-  const signedIn = useSelector((state) => state.auth.signedIn);
-
   const classes = useStyles();
 
   const handleStudentClick = () => {
@@ -82,50 +78,42 @@ const SideMenu = () => {
       <Divider className={classes.divider} variant="middle" />
 
       <List className={classes.list}>
-        {!signedIn ? (
-          <ListItem button className={classes.listItem} component={Typography}>
-            You need to sign in to see available options...
-          </ListItem>
-        ) : (
-          <>
-            <ListItem
-              button
-              className={classes.listItem}
-              component={NavLink}
-              exact
-              to="/"
-            >
-              <ListItemIcon className={classes.listItemIcon}>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
+        <ListItem
+          button
+          className={classes.listItem}
+          component={NavLink}
+          exact
+          to="/"
+        >
+          <ListItemIcon className={classes.listItemIcon}>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Home" />
+        </ListItem>
 
-            <ListItem button onClick={handleStudentClick}>
-              <ListItemIcon className={classes.listItemIcon}>
-                <SchoolIcon />
-              </ListItemIcon>
-              <ListItemText primary="Student's Panel" />
-              {isStudentListExpanded ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
+        <ListItem button onClick={handleStudentClick}>
+          <ListItemIcon className={classes.listItemIcon}>
+            <SchoolIcon />
+          </ListItemIcon>
+          <ListItemText primary="Student's Panel" />
+          {isStudentListExpanded ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
 
-            <Collapse in={isStudentListExpanded} timeout="auto" unmountOnExit>
-              <ExpandedList data={menuItemsStudent} nestedClass={classes.nested} />
-            </Collapse>
+        <Collapse in={isStudentListExpanded} timeout="auto" unmountOnExit>
+          <ExpandedList data={menuItemsStudent} nestedClass={classes.nested} />
+        </Collapse>
 
-            <ListItem button onClick={handleTeacherClick}>
-              <ListItemIcon className={classes.listItemIcon}>
-                <PostAddIcon />
-              </ListItemIcon>
-              <ListItemText primary="Teacher's Panel" />
-              {isTeacherListExpanded ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
+        <ListItem button onClick={handleTeacherClick}>
+          <ListItemIcon className={classes.listItemIcon}>
+            <PostAddIcon />
+          </ListItemIcon>
+          <ListItemText primary="Teacher's Panel" />
+          {isTeacherListExpanded ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
 
-            <Collapse in={isTeacherListExpanded} timeout="auto" unmountOnExit>
-              <ExpandedList data={menuItemsTeacher} nestedClass={classes.nested} />
-            </Collapse>
-          </>
-        )}
+        <Collapse in={isTeacherListExpanded} timeout="auto" unmountOnExit>
+          <ExpandedList data={menuItemsTeacher} nestedClass={classes.nested} />
+        </Collapse>
       </List>
     </nav>
   );
