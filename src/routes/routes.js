@@ -1,27 +1,14 @@
-import ABCSentence from '../pages/TeacherPanel/ABCSentence/ABCSentence';
+import ABCSentence from '../pages/Excercises/ABCSentence/ABCSentence';
 import ErrorPage from '../pages/ErrorPage/ErrorPage';
-import JumbleWord from '../pages/TeacherPanel/JumbleWord/JumbleWord';
-import JumbleSentence from '../pages/TeacherPanel/JumbleSentence/JumbleSentence';
+import JumbleWord from '../pages/Excercises/JumbleWord/JumbleWord';
+import JumbleSentence from '../pages/Excercises/JumbleSentence/JumbleSentence';
 import LandingPage from '../pages/LandingPage/LandingPage';
-import StudentPanel from '../pages/StudentPanel/StudentPanel';
-import TeacherPanel from '../pages/TeacherPanel/TeacherPanel';
+import TeacherPanel from '../pages/Excercises/TeacherPanel';
 
 const routes = [
   {
     path: '/',
     component: LandingPage,
-  },
-  {
-    path: '/student/1',
-    component: StudentPanel,
-  },
-  {
-    path: '/student/2',
-    component: StudentPanel,
-  },
-  {
-    path: '/student/3',
-    component: StudentPanel,
   },
   {
     path: '/teacher/abcsentence',

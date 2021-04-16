@@ -13,13 +13,12 @@ import {
 
 import HomeIcon from '@material-ui/icons/Home';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import SchoolIcon from '@material-ui/icons/School';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import ExpandedList from '../ExpandedList/ExpandedList';
 
-import { menuItemsStudent, menuItemsTeacher } from './menuItems';
+import { menuItemsTeacher } from './menuItems';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,17 +59,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SideMenu = () => {
-  const [isStudentListExpanded, setIsStudentListExpanded] = useState(false);
-  const [isTeacherListExpanded, setIsTeacherListExpanded] = useState(false);
+  const [excerciseListExpanded, setExcerciseListExpanded] = useState(true);
 
   const classes = useStyles();
 
-  const handleStudentClick = () => {
-    setIsStudentListExpanded(!isStudentListExpanded);
-  };
-
   const handleTeacherClick = () => {
-    setIsTeacherListExpanded(!isTeacherListExpanded);
+    setExcerciseListExpanded(!excerciseListExpanded);
   };
 
   return (
@@ -91,27 +85,15 @@ const SideMenu = () => {
           <ListItemText primary="Home" />
         </ListItem>
 
-        <ListItem button onClick={handleStudentClick}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <SchoolIcon />
-          </ListItemIcon>
-          <ListItemText primary="Student's Panel" />
-          {isStudentListExpanded ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-
-        <Collapse in={isStudentListExpanded} timeout="auto" unmountOnExit>
-          <ExpandedList data={menuItemsStudent} nestedClass={classes.nested} />
-        </Collapse>
-
         <ListItem button onClick={handleTeacherClick}>
           <ListItemIcon className={classes.listItemIcon}>
             <PostAddIcon />
           </ListItemIcon>
-          <ListItemText primary="Teacher's Panel" />
-          {isTeacherListExpanded ? <ExpandLess /> : <ExpandMore />}
+          <ListItemText primary="Excercises" />
+          {excerciseListExpanded ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
 
-        <Collapse in={isTeacherListExpanded} timeout="auto" unmountOnExit>
+        <Collapse in={excerciseListExpanded} timeout="auto" unmountOnExit>
           <ExpandedList data={menuItemsTeacher} nestedClass={classes.nested} />
         </Collapse>
       </List>
