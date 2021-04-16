@@ -44,9 +44,10 @@ const LoginForm = () => {
 
   const classes = useStyles();
 
-  const handleLoginClick = async () => {
+  const handleLoginClick = async (e) => {
+    e.preventDefault();
     setLoginPending(true);
-    await sleep(3000);
+    await sleep(2000);
     if (login === 'q' && password === 'q') {
       dispatch(
         setSnackbar({
@@ -111,6 +112,7 @@ const LoginForm = () => {
             size="large"
             variant="contained"
             onClick={handleLoginClick}
+            type="submit"
           >
             {loginPending ? (
               <CircularProgress color="inherit" size={26} />
