@@ -9,10 +9,7 @@ export const jumbleWordSlice = createSlice({
     excercise: [],
     word: null,
   },
-  // Redux Toolkit allows us to write "mutating" logic in reducers. It
-  // doesn't actually mutate the state because it uses the Immer library,
-  // which detects changes to a "draft state" and produces a brand new
-  // immutable state based off those changes
+
   reducers: {
     incrementAddExcerciseCount: (state) => {
       state.addExcerciseCount += 1;
@@ -107,7 +104,6 @@ export const jumbleWordSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {
   incrementAddExcerciseCount,
   setCategory,
